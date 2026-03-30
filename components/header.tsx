@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { navLinks, siteConfig } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
+import ThemeToggle from "@/components/theme-toggle";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -25,35 +26,37 @@ export default function Header() {
           <span className="text-indigo-500">.</span>
         </a>
 
-        {/* Desktop nav */}
-        <ul className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link, i) => (
-            <motion.li
-              key={link.href}
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
-            >
-              <a
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-indigo-500"
+        <div className="flex items-center gap-2">
+          <ul className="hidden items-center gap-8 md:flex">
+            {navLinks.map((link, i) => (
+              <motion.li
+                key={link.href}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
               >
-                {link.label}
-              </a>
-            </motion.li>
-          ))}
-        </ul>
+                <a
+                  href={link.href}
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-indigo-500"
+                >
+                  {link.label}
+                </a>
+              </motion.li>
+            ))}
+          </ul>
 
-        {/* Mobile toggle */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </Button>
+          <ThemeToggle />
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </Button>
+        </div>
       </nav>
 
       {/* Mobile nav */}
