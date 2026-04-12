@@ -74,6 +74,7 @@ export const siteConfig: SiteConfig = {
 
 export const navLinks: NavLink[] = [
   { label: "About", href: "#about" },
+  { label: "Contributions", href: "#contributions" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
@@ -153,7 +154,13 @@ export const projects: Project[] = [
     title: "CloudBoard",
     description:
       "A real-time collaborative whiteboard application with support for drawing, sticky notes, and live cursors. Built with WebSocket for instant synchronisation across multiple users.",
-    technologies: ["Next.js", "Socket.io", "Canvas API", "Redis", "Tailwind CSS"],
+    technologies: [
+      "Next.js",
+      "Socket.io",
+      "Canvas API",
+      "Redis",
+      "Tailwind CSS",
+    ],
     liveUrl: "https://cloudboard.example.com",
     repoUrl: "https://github.com/johndoe/cloudboard",
     featured: true,
@@ -242,7 +249,15 @@ export const skills: Skill[] = [
   },
   {
     category: "DevOps & Tools",
-    items: ["Docker", "AWS", "Vercel", "GitHub Actions", "CI/CD", "Nginx", "Linux"],
+    items: [
+      "Docker",
+      "AWS",
+      "Vercel",
+      "GitHub Actions",
+      "CI/CD",
+      "Nginx",
+      "Linux",
+    ],
   },
   {
     category: "Practices",
