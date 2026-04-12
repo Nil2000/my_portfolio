@@ -1,6 +1,5 @@
 "use client";
 
-import { Briefcase } from "lucide-react";
 import { motion } from "motion/react";
 import { experiences } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
@@ -11,73 +10,76 @@ const stagger = {
 };
 
 const itemVariant = {
-  hidden: { opacity: 0, x: -32 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export default function Experience() {
   return (
-    <section id="experience" className="bg-muted/40 px-6 py-24">
-      <div className="mx-auto max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-14 text-center"
-        >
-          <p className="mb-2 text-sm font-semibold tracking-widest text-indigo-500 uppercase">
-            Experience
-          </p>
-          <h3 className="text-3xl font-bold text-foreground">
-            Where I&apos;ve worked
-          </h3>
-        </motion.div>
+    <section id="experience" className="w-full">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="mb-8"
+      >
+        <h2 className="text-xl font-bold text-foreground border-b border-border pb-2">
+          ## Experience
+        </h2>
+      </motion.div>
 
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="relative border-l-2 border-border pl-8"
-        >
-          {experiences.map((exp, idx) => (
-            <motion.div
-              key={exp.id}
-              variants={itemVariant}
-              className={`relative ${idx === experiences.length - 1 ? "pb-0" : "pb-12"}`}
-            >
-              {/* Timeline dot */}
-              <span className="absolute -left-9.25 flex h-10 w-10 items-center justify-center rounded-full border-2 border-indigo-500 bg-background">
-                <Briefcase size={16} className="text-indigo-500" />
-              </span>
-
-              <p className="mb-1 text-xs font-semibold tracking-wide text-indigo-500 uppercase">
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        className="flex flex-col gap-8"
+      >
+        {experiences.map((exp) => (
+          <motion.div
+            key={exp.id}
+            variants={itemVariant}
+            className="flex flex-col sm:flex-row gap-2 sm:gap-8"
+          >
+            <div className="sm:w-1/3 shrink-0 pt-1">
+              <p className="text-sm font-mono text-muted-foreground">
                 {exp.period}
               </p>
-              <h4 className="text-xl font-bold text-foreground">{exp.role}</h4>
-              <a
-                href={exp.companyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mb-3 inline-block text-sm font-medium text-muted-foreground transition-colors hover:text-indigo-500"
-              >
-                @ {exp.company}
-              </a>
-              <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+            </div>
+
+            <div className="sm:w-2/3 flex flex-col gap-2">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">
+                  {exp.role}
+                </h3>
+                <a
+                  href={exp.companyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  @ {exp.company}
+                </a>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {exp.description}
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 mt-2">
                 {exp.technologies.map((tech) => (
-                  <Badge key={tech} variant="secondary">
+                  <Badge
+                    key={tech}
+                    variant="secondary"
+                    className="font-mono text-xs"
+                  >
                     {tech}
                   </Badge>
                 ))}
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   );
 }

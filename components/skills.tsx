@@ -6,66 +6,59 @@ import { Badge } from "@/components/ui/badge";
 
 const stagger = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 const groupVariant = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
-};
-
-const badgeVariant = {
-  hidden: { opacity: 0, scale: 0.85 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export default function Skills() {
   return (
-    <section id="skills" className="bg-muted/40 px-6 py-24">
-      <div className="mx-auto max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-14 text-center"
-        >
-          <p className="mb-2 text-sm font-semibold tracking-widest text-indigo-500 uppercase">
-            Skills
-          </p>
-          <h3 className="text-3xl font-bold text-foreground">
-            Technologies I work with
-          </h3>
-        </motion.div>
+    <section id="skills" className="w-full">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="mb-8"
+      >
+        <h2 className="text-xl font-bold text-foreground border-b border-border pb-2">
+          ## Skills
+        </h2>
+      </motion.div>
 
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {skills.map((group) => (
-            <motion.div key={group.category} variants={groupVariant}>
-              <h4 className="mb-3 text-xs font-bold tracking-widest text-muted-foreground uppercase">
-                {group.category}
-              </h4>
-              <motion.div variants={stagger} className="flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <motion.div key={item} variants={badgeVariant}>
-                    <Badge
-                      variant="outline"
-                      className="cursor-default transition-colors hover:border-indigo-400 hover:text-indigo-500"
-                    >
-                      {item}
-                    </Badge>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6"
+      >
+        {skills.map((group) => (
+          <motion.div
+            key={group.category}
+            variants={groupVariant}
+            className="flex flex-col gap-3 border border-border p-4 rounded-md"
+          >
+            <h3 className="text-sm font-mono font-bold text-foreground lowercase">
+              {group.category}
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {group.items.map((item) => (
+                <Badge
+                  key={item}
+                  variant="outline"
+                  className="font-mono text-xs cursor-default bg-transparent text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {item}
+                </Badge>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   );
 }

@@ -1,6 +1,5 @@
 import Header from "@/components/header";
 import Hero from "@/components/hero";
-import About from "@/components/about";
 import GithubContributions from "@/components/github-contributions";
 import Experience from "@/components/experience";
 import Projects from "@/components/projects";
@@ -12,9 +11,8 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-3xl mx-auto flex flex-col gap-16 px-6 pb-20">
         <Hero />
-        <About />
         <GithubContributions />
         <Experience />
         <Projects />

@@ -1,188 +1,97 @@
 "use client";
 
-import { ExternalLink, Code2 } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { motion } from "motion/react";
 import { projects } from "@/data/portfolio";
-import SocialIcon from "./social-icon";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import SocialIcon from "./social-icon";
 
 const stagger = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
-const cardVariant = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+const itemVariant = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export default function Projects() {
-  const featured = projects.filter((p) => p.featured);
-  const other = projects.filter((p) => !p.featured);
-
   return (
-    <section id="projects" className="px-6 py-24">
-      <div className="mx-auto max-w-5xl">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-14 text-center"
-        >
-          <p className="mb-2 text-sm font-semibold tracking-widest text-indigo-500 uppercase">
-            Projects
-          </p>
-          <h3 className="text-3xl font-bold text-foreground">
-            Things I&apos;ve built
-          </h3>
-        </motion.div>
+    <section id="projects" className="w-full">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="mb-8"
+      >
+        <h2 className="text-xl font-bold text-foreground border-b border-border pb-2">
+          ## Projects
+        </h2>
+      </motion.div>
 
-        {/* Featured projects */}
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="mb-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-        >
-          {featured.map((project) => (
-            <motion.div key={project.id} variants={cardVariant}>
-              <Card className="group flex h-full flex-col transition-all hover:ring-indigo-300 hover:shadow-lg hover:shadow-indigo-500/5 dark:hover:ring-indigo-500/40">
-                <CardHeader>
-                  <div className="mb-2 flex items-center justify-between">
-                    <Code2 size={26} className="text-indigo-500" />
-                    <div className="flex gap-2">
-                      {project.repoUrl && (
-                        <Button asChild variant="ghost" size="icon-sm">
-                          <a
-                            href={project.repoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Source code"
-                          >
-                            <SocialIcon name="Github" size={16} />
-                          </a>
-                        </Button>
-                      )}
-                      {project.liveUrl && (
-                        <Button asChild variant="ghost" size="icon-sm">
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Live demo"
-                          >
-                            <ExternalLink size={16} />
-                          </a>
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                  <CardTitle className="text-base font-bold group-hover:text-indigo-500 transition-colors">
-                    {project.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm leading-relaxed">
-                    {project.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter className="mt-auto flex flex-wrap gap-1.5 bg-transparent border-t-0">
-                  {project.technologies.map((tech) => (
-                    <Badge key={tech} variant="outline" className="text-xs">
-                      {tech}
-                    </Badge>
-                  ))}
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        className="flex flex-col gap-6"
+      >
+        {projects.map((project) => (
+          <motion.div
+            key={project.id}
+            variants={itemVariant}
+            className="flex flex-col gap-2 p-4 border border-border rounded-md hover:bg-muted/50 transition-colors"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <h3 className="text-lg font-bold text-foreground">
+                {project.title}
+              </h3>
+              <div className="flex items-center gap-3 shrink-0">
+                {project.repoUrl && (
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Source code"
+                  >
+                    <SocialIcon name="Github" size={18} />
+                  </a>
+                )}
+                {project.liveUrl && (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Live demo"
+                  >
+                    <ExternalLink size={18} />
+                  </a>
+                )}
+              </div>
+            </div>
 
-        {/* Other projects */}
-        {other.length > 0 && (
-          <>
-            <motion.h4
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-              className="mb-8 text-center text-lg font-semibold text-muted-foreground"
-            >
-              Other Noteworthy Projects
-            </motion.h4>
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {other.map((project) => (
-                <motion.div key={project.id} variants={cardVariant}>
-                  <Card size="sm" className="group flex h-full flex-col">
-                    <CardHeader>
-                      <div className="mb-1 flex items-center justify-between">
-                        <Code2 size={20} className="text-muted-foreground" />
-                        <div className="flex gap-1">
-                          {project.repoUrl && (
-                            <Button asChild variant="ghost" size="icon-xs">
-                              <a
-                                href={project.repoUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Source code"
-                              >
-                                <SocialIcon name="Github" size={14} />
-                              </a>
-                            </Button>
-                          )}
-                          {project.liveUrl && (
-                            <Button asChild variant="ghost" size="icon-xs">
-                              <a
-                                href={project.liveUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Live demo"
-                              >
-                                <ExternalLink size={14} />
-                              </a>
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                      <CardTitle className="text-sm font-bold group-hover:text-indigo-500 transition-colors">
-                        {project.title}
-                      </CardTitle>
-                      <CardDescription className="text-xs leading-relaxed">
-                        {project.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardFooter className="mt-auto flex flex-wrap gap-1 bg-transparent border-t-0">
-                      {project.technologies.map((tech) => (
-                        <Badge
-                          key={tech}
-                          variant="ghost"
-                          className="text-xs px-1.5"
-                        >
-                          {tech}
-                        </Badge>
-                      ))}
-                    </CardFooter>
-                  </Card>
-                </motion.div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {project.description}
+            </p>
+
+            <div className="flex flex-wrap gap-2 mt-2">
+              {project.technologies.map((tech) => (
+                <Badge
+                  key={tech}
+                  variant="outline"
+                  className="font-mono text-xs bg-transparent"
+                >
+                  {tech}
+                </Badge>
               ))}
-            </motion.div>
-          </>
-        )}
-      </div>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   );
 }

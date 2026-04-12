@@ -161,119 +161,85 @@ export default function GithubContributions() {
   });
 
   return (
-    <section id="contributions" className="px-6 py-24">
-      <div className="mx-auto max-w-5xl">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-12 text-center"
-        >
-          <p className="mb-2 text-sm font-semibold tracking-widest text-indigo-500 uppercase">
-            Open Source
-          </p>
-          <h3 className="text-3xl font-bold text-foreground">
-            GitHub Contributions
-          </h3>
-          <p className="mt-2 text-muted-foreground">
-            {data.total.lastYear.toLocaleString()} contributions in the last
-            year
-          </p>
-        </motion.div>
+    <section id="contributions" className="w-full">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="mb-8"
+      >
+        <h2 className="text-xl font-bold text-foreground border-b border-border pb-2 flex items-center justify-between">
+          <span>## Github Contributions</span>
+          <span className="text-sm font-mono text-muted-foreground font-normal">
+            {data.total.lastYear.toLocaleString()} in the last year
+          </span>
+        </h2>
+      </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="rounded-xl border bg-card p-6 shadow-sm"
-        >
-          <div className="overflow-x-auto">
-            <div className="min-w-[750px]">
-              <div className="flex text-xs text-muted-foreground mb-2">
-                <div className="w-8" />
-                {months.map((m, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 text-center"
-                    style={{
-                      marginLeft: i === 0 ? `${m.index * 14}px` : undefined,
-                    }}
-                  >
-                    {m.label}
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex">
-                <div className="flex flex-col justify-around text-xs text-muted-foreground w-8 pr-2">
-                  <span>Mon</span>
-                  <span>Wed</span>
-                  <span>Fri</span>
-                </div>
-
-                <div className="flex gap-[3px]">
-                  {weeks.map((week, weekIndex) => (
-                    <div key={weekIndex} className="flex flex-col gap-[3px]">
-                      {week.map((day, dayIndex) => {
-                        if (!day) {
-                          return (
-                            <div
-                              key={`empty-${dayIndex}`}
-                              className="w-[10px] h-[10px] rounded-sm bg-transparent"
-                            />
-                          );
-                        }
-                        return (
-                          <div
-                            key={dayIndex}
-                            className={`w-[10px] h-[10px] rounded-sm ${getContributionColor(
-                              day.level,
-                              false,
-                            )} dark:${getContributionColor(day.level, true)} transition-colors hover:ring-2 hover:ring-indigo-500 hover:ring-offset-1 cursor-pointer`}
-                            title={`${day.date}: ${day.count} contribution${
-                              day.count !== 1 ? "s" : ""
-                            }`}
-                          />
-                        );
-                      })}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center justify-end gap-2 mt-4 text-xs text-muted-foreground">
-                <span>Less</span>
-                <div className="flex gap-[3px]">
-                  {[0, 1, 2, 3, 4].map((level) => (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+        className="w-full overflow-x-auto pb-4"
+      >
+        <div className="min-w-[750px] flex gap-1">
+          {weeks.map((week, weekIndex) => (
+            <div key={weekIndex} className="flex flex-col gap-1">
+              {week.map((day, dayIndex) => {
+                if (!day) {
+                  return (
                     <div
-                      key={level}
-                      className={`w-[10px] h-[10px] rounded-sm ${getContributionColor(
-                        level,
-                        false,
-                      )} dark:${getContributionColor(level, true)}`}
+                      key={`empty-${dayIndex}`}
+                      className="w-3 h-3 rounded-sm bg-transparent"
                     />
-                  ))}
-                </div>
-                <span>More</span>
-              </div>
+                  );
+                }
+                return (
+                  <div
+                    key={dayIndex}
+                    className={`w-3 h-3 rounded-sm ${getContributionColor(
+                      day.level,
+                      true, // Just force dark mode colors for a dev vibe, or use both
+                    )} transition-colors cursor-pointer hover:ring-1 hover:ring-foreground`}
+                    title={`${day.date}: ${day.count} contribution${
+                      day.count !== 1 ? "s" : ""
+                    }`}
+                  />
+                );
+              })}
             </div>
-          </div>
+          ))}
+        </div>
 
-          <div className="mt-6 flex justify-center">
-            <a
-              href={`https://github.com/nil2000`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <GitHubIcon className="w-4 h-4" />
-              View full profile on GitHub
-            </a>
+        <div className="flex items-center justify-between mt-4 text-xs font-mono text-muted-foreground min-w-[750px]">
+          <a
+            href={`https://github.com/nil2000`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:text-foreground transition-colors"
+          >
+            <GitHubIcon className="w-4 h-4" />
+            github.com/nil2000
+          </a>
+          <div className="flex items-center gap-2">
+            <span>less</span>
+            <div className="flex gap-1">
+              {[0, 1, 2, 3, 4].map((level) => (
+                <div
+                  key={level}
+                  className={`w-3 h-3 rounded-sm ${getContributionColor(
+                    level,
+                    true,
+                  )}`}
+                />
+              ))}
+            </div>
+            <span>more</span>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

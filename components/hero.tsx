@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowDown } from "lucide-react";
 import { motion } from "motion/react";
 import { heroData, socialLinks } from "@/data/portfolio";
 import SocialIcon from "./social-icon";
@@ -8,93 +7,89 @@ import { Button } from "@/components/ui/button";
 
 const fadeUp = (delay: number) =>
   ({
-    initial: { opacity: 0, y: 24 },
+    initial: { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, delay, ease: "easeOut" as const },
+    transition: { duration: 0.4, delay, ease: "easeOut" as const },
   }) as const;
 
 export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen flex-col items-center justify-center px-6 pt-20 text-center"
+      className="flex flex-col items-start justify-center pt-32 pb-8"
     >
-      <div className="mx-auto max-w-3xl">
-        <motion.p
-          {...fadeUp(0.1)}
-          className="mb-4 text-sm font-semibold tracking-widest text-indigo-500 uppercase"
-        >
-          {heroData.greeting}
-        </motion.p>
+      <div className="w-full flex flex-col gap-8">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 w-full">
+          {/* Square Image Box (Avatar) */}
+          <motion.div
+            {...fadeUp(0.1)}
+            className="w-40 h-40 sm:w-48 sm:h-48 shrink-0 rounded-lg bg-muted border border-border flex items-center justify-center overflow-hidden"
+          >
+            {/* Using a placeholder character or user initials if image not present */}
+            <span className="text-4xl text-muted-foreground font-bold">
+              {heroData.name.charAt(0)}
+            </span>
+          </motion.div>
 
-        <motion.h1
-          {...fadeUp(0.2)}
-          className="mb-4 text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl lg:text-7xl"
-        >
-          {heroData.name}
-        </motion.h1>
+          {/* Text Lines */}
+          <div className="flex flex-col justify-center gap-3 text-center sm:text-left mt-2 sm:mt-4">
+            <motion.h1
+              {...fadeUp(0.2)}
+              className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground"
+            >
+              {heroData.name}
+            </motion.h1>
+            <motion.p
+              {...fadeUp(0.3)}
+              className="text-lg text-muted-foreground"
+            >
+              {heroData.tagline}
+            </motion.p>
+            <motion.p
+              {...fadeUp(0.4)}
+              className="text-sm text-muted-foreground max-w-md"
+            >
+              Building tools for the web.
+            </motion.p>
+          </div>
+        </div>
 
-        <motion.p
-          {...fadeUp(0.3)}
-          className="mb-6 text-2xl font-semibold text-muted-foreground sm:text-3xl"
-        >
-          {heroData.tagline}
-        </motion.p>
-
-        <motion.p
-          {...fadeUp(0.4)}
-          className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-muted-foreground"
-        >
-          {heroData.description}
-        </motion.p>
-
+        {/* Links Section */}
         <motion.div
           {...fadeUp(0.5)}
-          className="mb-12 flex items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center sm:justify-start pt-6 border-t border-border/50"
         >
-          <Button
-            asChild
-            className="h-12 rounded-full bg-indigo-500 px-8 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-600"
-          >
-            <a href={heroData.resumeUrl}>Download Résumé</a>
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            className="h-12 rounded-full px-8 text-sm font-semibold hover:border-indigo-500 hover:text-indigo-500"
-          >
-            <a href="#contact">Get In Touch</a>
-          </Button>
-        </motion.div>
-
-        <motion.div
-          {...fadeUp(0.6)}
-          className="flex items-center justify-center gap-5"
-        >
-          {socialLinks.map((link) => (
-            <a
-              key={link.platform}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.platform}
-              className="text-muted-foreground transition-colors hover:text-indigo-500"
+          <div className="flex items-center gap-4">
+            {socialLinks.map((link) => (
+              <a
+                key={link.platform}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.platform}
+                className="p-2 border border-border rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              >
+                <SocialIcon name={link.icon} size={20} />
+              </a>
+            ))}
+          </div>
+          <div className="flex items-center gap-4 ml-0 sm:ml-4 mt-4 sm:mt-0">
+            <Button
+              asChild
+              variant="outline"
+              className="rounded-md border-border font-mono text-sm hover:bg-muted"
             >
-              <SocialIcon name={link.icon} size={22} />
-            </a>
-          ))}
+              <a href={heroData.resumeUrl}>resume</a>
+            </Button>
+            <Button
+              asChild
+              className="rounded-md bg-foreground text-background font-mono text-sm hover:bg-foreground/90"
+            >
+              <a href="#contact">contact</a>
+            </Button>
+          </div>
         </motion.div>
       </div>
-
-      <motion.a
-        href="#about"
-        aria-label="Scroll down"
-        className="absolute bottom-10 text-muted-foreground"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-      >
-        <ArrowDown size={24} />
-      </motion.a>
     </section>
   );
 }

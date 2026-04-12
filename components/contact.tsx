@@ -5,55 +5,33 @@ import { motion } from "motion/react";
 import { contactData } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
 
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55 } },
-};
-
 export default function Contact() {
   return (
-    <section id="contact" className="px-6 py-24">
+    <section id="contact" className="w-full pt-12 border-t border-border/50">
       <motion.div
-        variants={stagger}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        className="mx-auto max-w-2xl text-center"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+        className="flex flex-col gap-6"
       >
-        <motion.p
-          variants={fadeUp}
-          className="mb-2 text-sm font-semibold tracking-widest text-indigo-500 uppercase"
-        >
-          Contact
-        </motion.p>
-        <motion.h3
-          variants={fadeUp}
-          className="mb-6 text-3xl font-bold text-foreground"
-        >
-          {contactData.heading}
-        </motion.h3>
-        <motion.p
-          variants={fadeUp}
-          className="mb-10 text-base leading-relaxed text-muted-foreground"
-        >
+        <h2 className="text-xl font-bold text-foreground">## Contact</h2>
+
+        <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
           {contactData.description}
-        </motion.p>
-        <motion.div variants={fadeUp}>
+        </p>
+
+        <div>
           <Button
             asChild
-            className="h-14 rounded-full bg-indigo-500 px-10 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-600 hover:shadow-indigo-500/40"
+            className="rounded-md bg-foreground text-background font-mono text-sm hover:bg-foreground/90 mt-2"
           >
             <a href={`mailto:${contactData.email}`}>
-              <Send size={16} />
+              <Send size={14} className="mr-2" />
               Say Hello
             </a>
           </Button>
-        </motion.div>
+        </div>
       </motion.div>
     </section>
   );
