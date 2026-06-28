@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
-import { heroData, socialLinks } from "@/data/portfolio";
+import { heroData, siteConfig, socialLinks } from "@/data/portfolio";
 import SocialIcon from "./social-icon";
 import { Button } from "@/components/ui/button";
 
@@ -23,12 +24,16 @@ export default function Hero() {
           {/* Square Image Box (Avatar) */}
           <motion.div
             {...fadeUp(0.1)}
-            className="w-40 h-40 sm:w-48 sm:h-48 shrink-0 rounded-lg bg-muted border border-border flex items-center justify-center overflow-hidden"
+            className="relative h-40 w-40 shrink-0 overflow-hidden rounded-lg border border-border bg-muted sm:h-48 sm:w-48"
           >
-            {/* Using a placeholder character or user initials if image not present */}
-            <span className="text-4xl text-muted-foreground font-bold">
-              {heroData.name.charAt(0)}
-            </span>
+            <Image
+              src={siteConfig.profileImage}
+              alt={`${heroData.name} profile picture`}
+              fill
+              priority
+              sizes="(max-width: 640px) 160px, 192px"
+              className="object-cover"
+            />
           </motion.div>
 
           {/* Text Lines */}

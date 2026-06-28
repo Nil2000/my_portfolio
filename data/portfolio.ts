@@ -60,16 +60,18 @@ export interface SiteConfig {
   title: string;
   description: string;
   url: string;
+  profileImage: string;
 }
 
 // ─── Data ────────────────────────────────────────────
 
 export const siteConfig: SiteConfig = {
-  name: "John Doe",
-  title: "John Doe — Full-Stack Developer",
+  name: "Nilabhra Adhikari",
+  title: "Nilabhra Adhikari — Full-Stack Developer",
   description:
     "Full-stack developer specialising in React, Next.js, and Node.js. Building elegant solutions to complex problems.",
-  url: "https://johndoe.dev",
+  url: "https://nilabhra.info",
+  profileImage: "/my-pfp.jpg",
 };
 
 export const navLinks: NavLink[] = [

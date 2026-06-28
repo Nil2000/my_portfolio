@@ -44,23 +44,15 @@ function getContributionLevel(count: number): number {
   return 4;
 }
 
-function getContributionColor(level: number, isDark: boolean): string {
-  const colors = isDark
-    ? [
-        "bg-[#161b22]",
-        "bg-[#0e4429]",
-        "bg-[#006d32]",
-        "bg-[#26a641]",
-        "bg-[#39d353]",
-      ]
-    : [
-        "bg-[#ebedf0]",
-        "bg-[#9be9a8]",
-        "bg-[#40c463]",
-        "bg-[#30a14e]",
-        "bg-[#216e39]",
-      ];
-  return colors[level] || colors[0];
+function getContributionColor(level: number): string {
+  const colors = [
+    "bg-foreground/20",
+    "bg-foreground/40",
+    "bg-foreground/60",
+    "bg-foreground/80",
+    "bg-foreground",
+  ];
+  return colors[level] ?? colors[0];
 }
 
 const monthNames = [
@@ -182,26 +174,28 @@ export default function GithubContributions() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="w-full overflow-x-auto pb-4"
+        className="w-full pb-4"
       >
-        <div className="min-w-[750px] flex gap-1">
+        <div className="flex w-full gap-[3px]">
           {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex flex-col gap-1">
+            <div
+              key={weekIndex}
+              className="flex min-w-0 flex-1 flex-col gap-[3px]"
+            >
               {week.map((day, dayIndex) => {
                 if (!day) {
                   return (
                     <div
                       key={`empty-${dayIndex}`}
-                      className="w-3 h-3 rounded-sm bg-transparent"
+                      className="aspect-square w-full rounded-sm bg-transparent"
                     />
                   );
                 }
                 return (
                   <div
                     key={dayIndex}
-                    className={`w-3 h-3 rounded-sm ${getContributionColor(
+                    className={`aspect-square w-full rounded-sm ${getContributionColor(
                       day.level,
-                      true, // Just force dark mode colors for a dev vibe, or use both
                     )} transition-colors cursor-pointer hover:ring-1 hover:ring-foreground`}
                     title={`${day.date}: ${day.count} contribution${
                       day.count !== 1 ? "s" : ""
@@ -213,7 +207,7 @@ export default function GithubContributions() {
           ))}
         </div>
 
-        <div className="flex items-center justify-between mt-4 text-xs font-mono text-muted-foreground min-w-[750px]">
+        <div className="mt-4 flex items-center justify-between text-xs font-mono text-muted-foreground">
           <a
             href={`https://github.com/nil2000`}
             target="_blank"
@@ -229,10 +223,7 @@ export default function GithubContributions() {
               {[0, 1, 2, 3, 4].map((level) => (
                 <div
                   key={level}
-                  className={`w-3 h-3 rounded-sm ${getContributionColor(
-                    level,
-                    true,
-                  )}`}
+                  className={`h-3 w-3 rounded-sm ${getContributionColor(level)}`}
                 />
               ))}
             </div>
