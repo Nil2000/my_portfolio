@@ -1,36 +1,41 @@
 "use client";
 
-import SendHorizontalIcon from "@/components/ui/send-horizontal-icon";
 import { motion } from "motion/react";
 import { contactData } from "@/data/portfolio";
-import { Button } from "@/components/ui/button";
+import SectionHeader from "@/components/section-header";
 
 export default function Contact() {
   return (
-    <section id="contact" className="w-full pt-12 border-t border-border/50">
+    <section id="contact" className="w-full pb-4">
+      <SectionHeader id="contact" />
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.4 }}
-        className="flex flex-col gap-6"
+        transition={{ duration: 0.45 }}
+        className="flex flex-col gap-8"
       >
-        <h2 className="text-xl font-bold text-foreground">## Contact</h2>
-
-        <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
+        <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
           {contactData.description}
         </p>
 
-        <div>
-          <Button
-            asChild
-            className="rounded-md bg-foreground text-background font-mono text-sm hover:bg-foreground/90 mt-2"
+        {/* Large typographic email CTA */}
+        <div className="flex flex-col gap-3">
+          <a
+            href={`mailto:${contactData.email}`}
+            className="group inline-flex items-baseline gap-3 w-fit"
           >
-            <a href={`mailto:${contactData.email}`}>
-              <SendHorizontalIcon size={14} className="mr-2" />
-              Say Hello
-            </a>
-          </Button>
+            <span className="text-2xl sm:text-3xl font-bold tracking-tighter text-foreground font-mono border-b border-transparent group-hover:border-accent-brand group-hover:text-accent-brand transition-colors leading-tight">
+              {contactData.email}
+            </span>
+            <span className="text-xs font-mono text-muted-foreground group-hover:text-accent-brand transition-colors uppercase tracking-widest hidden sm:inline">
+              ↗
+            </span>
+          </a>
+          <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest">
+            say hello
+          </p>
         </div>
       </motion.div>
     </section>

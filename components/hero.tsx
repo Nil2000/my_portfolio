@@ -1,100 +1,142 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { heroData, siteConfig, socialLinks } from "@/data/portfolio";
 import SocialIcon from "./social-icon";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const fadeUp = (delay: number) =>
   ({
-    initial: { opacity: 0, y: 10 },
+    initial: { opacity: 0, y: 12 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.4, delay, ease: "easeOut" as const },
+    transition: { duration: 0.5, delay, ease: "easeOut" as const },
   }) as const;
 
 export default function Hero() {
-  return (
-    <section
-      id="hero"
-      className="flex flex-col items-start justify-center pt-32 pb-8"
-    >
-      <div className="w-full flex flex-col gap-8">
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 w-full">
-          {/* Square Image Box (Avatar) */}
-          <motion.div
-            {...fadeUp(0.1)}
-            className="relative h-40 w-40 shrink-0 overflow-hidden rounded-lg border border-border bg-muted sm:h-48 sm:w-48"
-          >
-            <Image
-              src={siteConfig.profileImage}
-              alt={`${heroData.name} profile picture`}
-              fill
-              priority
-              sizes="(max-width: 640px) 160px, 192px"
-              className="object-cover"
-            />
-          </motion.div>
+  const reduceMotion = useReducedMotion();
 
-          {/* Text Lines */}
-          <div className="flex flex-col justify-center gap-3 text-center sm:text-left mt-2 sm:mt-4">
-            <motion.h1
-              {...fadeUp(0.2)}
-              className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground"
-            >
-              {heroData.name}
-            </motion.h1>
-            <motion.p
-              {...fadeUp(0.3)}
-              className="text-lg text-muted-foreground"
-            >
-              {heroData.tagline}
-            </motion.p>
-            <motion.p
-              {...fadeUp(0.4)}
-              className="text-sm text-muted-foreground max-w-md"
-            >
-              Building tools for the web.
-            </motion.p>
-          </div>
+  return (
+    <section id="hero" className="flex flex-col gap-10 pt-4 pb-2">
+      {/* Top row: name + avatar */}
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
+        <div className="flex flex-col gap-4">
+          {/* Eyebrow */}
+          <motion.p
+            {...fadeUp(0.05)}
+            className="text-xs font-mono text-muted-foreground uppercase tracking-widest"
+          >
+            {heroData.greeting}
+          </motion.p>
+
+          {/* Display name */}
+          <motion.h1
+            {...fadeUp(0.15)}
+            className="text-4xl sm:text-5xl font-bold tracking-tighter text-foreground leading-none"
+          >
+            {heroData.name}
+          </motion.h1>
+
+          {/* Status badge */}
+          {heroData.status.available && (
+            <motion.div {...fadeUp(0.22)}>
+              <Badge variant="success" className="gap-1.5 w-fit">
+                <span className="relative flex h-2 w-2">
+                  {!reduceMotion && (
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-brand opacity-60" />
+                  )}
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-brand" />
+                </span>
+                {heroData.status.label}
+              </Badge>
+            </motion.div>
+          )}
+
+          {/* Tagline */}
+          <motion.p
+            {...fadeUp(0.3)}
+            className="text-base text-muted-foreground max-w-sm"
+          >
+            {heroData.tagline}
+          </motion.p>
+
+          {/* Description */}
+          <motion.p
+            {...fadeUp(0.38)}
+            className="text-sm text-muted-foreground max-w-md leading-relaxed"
+          >
+            {heroData.description}
+          </motion.p>
         </div>
 
-        {/* Links Section */}
+        {/* Avatar */}
         <motion.div
-          {...fadeUp(0.5)}
-          className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center sm:justify-start pt-6 border-t border-border/50"
+          {...fadeUp(0.1)}
+          className="relative h-28 w-28 shrink-0 overflow-hidden rounded-md border border-border bg-muted self-start sm:self-auto"
         >
-          <div className="flex items-center gap-4">
-            {socialLinks.map((link) => (
-              <a
-                key={link.platform}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.platform}
-                className="p-2 border border-border rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                <SocialIcon name={link.icon} size={20} />
-              </a>
-            ))}
-          </div>
-          <div className="flex items-center gap-4 ml-0 sm:ml-4 mt-4 sm:mt-0">
-            <Button
-              asChild
-              variant="outline"
-              className="rounded-md border-border font-mono text-sm hover:bg-muted"
-            >
-              <a href={heroData.resumeUrl}>resume</a>
-            </Button>
-            <Button
-              asChild
-              className="rounded-md bg-foreground text-background font-mono text-sm hover:bg-foreground/90"
-            >
-              <a href="#contact">contact</a>
-            </Button>
-          </div>
+          <Image
+            src={siteConfig.profileImage}
+            alt={`${heroData.name} profile picture`}
+            fill
+            priority
+            sizes="112px"
+            className="object-cover"
+          />
         </motion.div>
       </div>
+
+      {/* Meta grid — data-driven from heroData.meta */}
+      <motion.div
+        {...fadeUp(0.45)}
+        className="grid grid-cols-1 sm:grid-cols-3 border border-border rounded-md divide-y sm:divide-y-0 sm:divide-x divide-border overflow-hidden"
+      >
+        {heroData.meta.map(({ label, value }) => (
+          <div key={label} className="flex flex-col gap-1 px-4 py-3">
+            <span className="text-xs text-muted-foreground uppercase tracking-widest font-mono">
+              {label}
+            </span>
+            <span className="text-sm text-foreground font-mono">{value}</span>
+          </div>
+        ))}
+      </motion.div>
+
+      {/* Actions + socials */}
+      <motion.div
+        {...fadeUp(0.55)}
+        className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
+      >
+        <div className="flex items-center gap-2">
+          <Button
+            asChild
+            className="rounded-md bg-foreground text-background font-mono text-xs h-8 px-4 hover:bg-foreground/85"
+          >
+            <a href="#contact">get in touch</a>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="rounded-md font-mono text-xs h-8 px-4 hover:bg-muted"
+          >
+            <a href={heroData.resumeUrl}>resume</a>
+          </Button>
+        </div>
+
+        <div className="flex items-center gap-1 sm:ml-auto">
+          {socialLinks.map((link) => (
+            <a
+              key={link.platform}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.platform}
+              className="p-2 text-muted-foreground transition-colors hover:text-accent-brand focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+            >
+              <SocialIcon name={link.icon} size={18} />
+            </a>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 }

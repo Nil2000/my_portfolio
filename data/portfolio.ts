@@ -11,12 +11,24 @@ export interface SocialLink {
   icon: "Github" | "Linkedin" | "X" | "Mail" | "Globe";
 }
 
+export interface HeroMeta {
+  label: string;
+  value: string;
+}
+
+export interface HeroStatus {
+  available: boolean;
+  label: string;
+}
+
 export interface HeroData {
   greeting: string;
   name: string;
   tagline: string;
   description: string;
   resumeUrl: string;
+  meta: HeroMeta[];
+  status: HeroStatus;
 }
 
 export interface AboutData {
@@ -32,6 +44,7 @@ export interface Experience {
   period: string;
   description: string;
   technologies: string[];
+  current?: boolean;
 }
 
 export interface Project {
@@ -63,7 +76,24 @@ export interface SiteConfig {
   profileImage: string;
 }
 
+export interface Section {
+  id: string;
+  index: string;
+  title: string;
+  navLabel: string;
+  showInNav: boolean;
+}
+
 // ─── Data ────────────────────────────────────────────
+
+export const sections: Section[] = [
+  { id: "about", index: "01", title: "about", navLabel: "About", showInNav: false },
+  { id: "contributions", index: "02", title: "contributions", navLabel: "Contributions", showInNav: true },
+  { id: "experience", index: "03", title: "experience", navLabel: "Experience", showInNav: true },
+  { id: "projects", index: "04", title: "projects", navLabel: "Projects", showInNav: true },
+  { id: "skills", index: "05", title: "skills", navLabel: "Skills", showInNav: true },
+  { id: "contact", index: "06", title: "contact", navLabel: "Contact", showInNav: true },
+];
 
 export const siteConfig: SiteConfig = {
   name: "Nilabhra Adhikari",
@@ -84,7 +114,7 @@ export const navLinks: NavLink[] = [
 ];
 
 export const socialLinks: SocialLink[] = [
-  { platform: "GitHub", url: "https://github.com/johndoe", icon: "Github" },
+  { platform: "GitHub", url: "https://github.com/nil2000", icon: "Github" },
   {
     platform: "LinkedIn",
     url: "https://linkedin.com/in/nilabhraadhikari",
@@ -105,6 +135,15 @@ export const heroData: HeroData = {
   description:
     "I'm a full-stack developer with 5+ years of experience crafting performant, accessible, and visually polished web applications. Currently focused on building products that make a difference.",
   resumeUrl: "/resume.pdf",
+  meta: [
+    { label: "role", value: "full-stack developer" },
+    { label: "focus", value: "react · next.js · node.js" },
+    { label: "status", value: "open to opportunities" },
+  ],
+  status: {
+    available: true,
+    label: "Available for work",
+  },
 };
 
 export const aboutData: AboutData = {
@@ -131,6 +170,7 @@ export const experiences: Experience[] = [
     description:
       "Lead the frontend architecture for the company's flagship SaaS product. Migrated legacy jQuery codebase to React/Next.js, improving page load times by 60%. Mentor a team of 4 junior developers and conduct regular code reviews.",
     technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS", "GraphQL"],
+    current: true,
   },
   {
     id: "exp-2",
@@ -281,5 +321,5 @@ export const contactData: ContactData = {
   heading: "Get In Touch",
   description:
     "I'm currently open to new opportunities and always happy to chat. Whether you have a question, a project idea, or just want to say hello — my inbox is always open.",
-  email: "hello@johndoe.dev",
+  email: "nilabhra09b.net@gmail.com",
 };

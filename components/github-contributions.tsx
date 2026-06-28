@@ -3,6 +3,7 @@
 import GithubIcon from "@/components/ui/github-icon";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
+import SectionHeader from "@/components/section-header";
 
 interface ContributionDay {
   date: string;
@@ -137,19 +138,18 @@ export default function GithubContributions() {
 
   return (
     <section id="contributions" className="w-full">
+      <SectionHeader id="contributions" />
+
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.4 }}
-        className="mb-8"
+        transition={{ duration: 0.3 }}
+        className="mb-5 -mt-4"
       >
-        <h2 className="text-xl font-bold text-foreground border-b border-border pb-2 flex items-center justify-between">
-          <span>## Github Contributions</span>
-          <span className="text-sm font-mono text-muted-foreground font-normal">
-            {data.total.lastYear.toLocaleString()} in the last year
-          </span>
-        </h2>
+        <p className="text-xs font-mono text-muted-foreground">
+          {data.total.lastYear.toLocaleString()} contributions in the last year
+        </p>
       </motion.div>
 
       <motion.div
