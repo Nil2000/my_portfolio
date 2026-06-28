@@ -1,6 +1,6 @@
 "use client";
 
-import { Send } from "lucide-react";
+import SendHorizontalIcon from "@/components/ui/send-horizontal-icon";
 import { motion } from "motion/react";
 import { contactData } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,7 @@ export default function Contact() {
             className="rounded-md bg-foreground text-background font-mono text-sm hover:bg-foreground/90 mt-2"
           >
             <a href={`mailto:${contactData.email}`}>
-              <Send size={14} className="mr-2" />
+              <SendHorizontalIcon size={14} className="mr-2" />
               Say Hello
             </a>
           </Button>

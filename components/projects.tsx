@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
+import ExternalLinkIcon from "@/components/ui/external-link-icon";
 import { motion } from "motion/react";
 import { projects } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
@@ -68,7 +68,7 @@ export default function Projects() {
                     className="text-muted-foreground hover:text-foreground transition-colors"
                     aria-label="Live demo"
                   >
-                    <ExternalLink size={18} />
+                    <ExternalLinkIcon size={18} />
                   </a>
                 )}
               </div>

@@ -8,7 +8,7 @@ export interface NavLink {
 export interface SocialLink {
   platform: string;
   url: string;
-  icon: "Github" | "Linkedin" | "Twitter" | "Mail" | "Globe";
+  icon: "Github" | "Linkedin" | "X" | "Mail" | "Globe";
 }
 
 export interface HeroData {
@@ -87,16 +87,20 @@ export const socialLinks: SocialLink[] = [
   { platform: "GitHub", url: "https://github.com/johndoe", icon: "Github" },
   {
     platform: "LinkedIn",
-    url: "https://linkedin.com/in/johndoe",
+    url: "https://linkedin.com/in/nilabhraadhikari",
     icon: "Linkedin",
   },
-  { platform: "Twitter", url: "https://twitter.com/johndoe", icon: "Twitter" },
-  { platform: "Email", url: "mailto:hello@johndoe.dev", icon: "Mail" },
+  {
+    platform: "X",
+    url: "https://x.com/I_AM_Nilabhra",
+    icon: "X",
+  },
+  { platform: "Email", url: "mailto:nilabhra09b.net@gmail.com", icon: "Mail" },
 ];
 
 export const heroData: HeroData = {
   greeting: "Hi, my name is",
-  name: "John Doe",
+  name: "Nilabhra Adhikari",
   tagline: "I build things for the web.",
   description:
     "I'm a full-stack developer with 5+ years of experience crafting performant, accessible, and visually polished web applications. Currently focused on building products that make a difference.",

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import UnorderedListIcon from "@/components/ui/unordered-list-icon";
+import XIcon from "@/components/ui/x-icon";
 import { motion, AnimatePresence } from "motion/react";
 import { navLinks, siteConfig } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
@@ -57,7 +58,7 @@ export default function Header() {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            {mobileOpen ? <XIcon size={18} /> : <UnorderedListIcon size={18} />}
           </Button>
         </div>
       </nav>

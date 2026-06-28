@@ -1,6 +1,7 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import BulbSvg from "@/components/ui/bulb-svg";
+import MoonIcon from "@/components/ui/moon-icon";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -23,7 +24,7 @@ export default function ThemeToggle() {
         aria-label="Toggle theme"
         disabled
       >
-        <Sun className="size-4 opacity-0" />
+        <BulbSvg size={16} className="opacity-0" />
       </Button>
     );
   }
@@ -42,9 +43,9 @@ export default function ThemeToggle() {
         }
       >
         {resolvedTheme === "dark" ? (
-          <Sun className="size-4" />
+          <BulbSvg size={16} />
         ) : (
-          <Moon className="size-4" />
+          <MoonIcon size={16} />
         )}
       </Button>
     </motion.div>
