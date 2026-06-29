@@ -6,6 +6,7 @@ import { heroData, siteConfig, socialLinks } from "@/data/portfolio";
 import SocialIcon from "./social-icon";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import MoonIcon from "./ui/moon-icon";
 
 const fadeUp = (delay: number) =>
   ({

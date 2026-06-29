@@ -5,7 +5,7 @@ import MoonIcon from "@/components/ui/moon-icon";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import BrightnessDownIcon from "@/components/ui/brightness-down-icon";
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -30,24 +30,22 @@ export default function ThemeToggle() {
   }
 
   return (
-    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-      <Button
-        variant="outline"
-        size="icon"
-        className="size-9 shrink-0"
-        onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-        aria-label={
-          resolvedTheme === "dark"
-            ? "Switch to light mode"
-            : "Switch to dark mode"
-        }
-      >
-        {resolvedTheme === "dark" ? (
-          <BulbSvg size={16} />
-        ) : (
-          <MoonIcon size={16} />
-        )}
-      </Button>
-    </motion.div>
+    <Button
+      variant="outline"
+      size="icon"
+      className="size-9 shrink-0"
+      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      aria-label={
+        resolvedTheme === "dark"
+          ? "Switch to light mode"
+          : "Switch to dark mode"
+      }
+    >
+      {resolvedTheme === "dark" ? (
+        <BrightnessDownIcon size={16} />
+      ) : (
+        <MoonIcon size={16} />
+      )}
+    </Button>
   );
 }
