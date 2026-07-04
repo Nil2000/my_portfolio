@@ -4,6 +4,7 @@ import { siteConfig } from "@/data/portfolio";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -57,6 +58,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
