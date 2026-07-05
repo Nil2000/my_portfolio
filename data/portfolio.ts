@@ -11,11 +11,6 @@ export interface SocialLink {
   icon: "Github" | "Linkedin" | "X" | "Mail" | "Globe";
 }
 
-export interface HeroMeta {
-  label: string;
-  value: string;
-}
-
 export interface HeroStatus {
   available: boolean;
   label: string;
@@ -27,13 +22,7 @@ export interface HeroData {
   tagline: string;
   description: string;
   resumeUrl: string;
-  meta: HeroMeta[];
   status: HeroStatus;
-}
-
-export interface AboutData {
-  paragraphs: string[];
-  highlights: { label: string; value: string }[];
 }
 
 export interface Experience {
@@ -87,12 +76,11 @@ export interface Section {
 // ─── Data ────────────────────────────────────────────
 
 export const sections: Section[] = [
-  { id: "about", index: "01", title: "about", navLabel: "About", showInNav: false },
-  { id: "contributions", index: "02", title: "contributions", navLabel: "Contributions", showInNav: true },
-  { id: "experience", index: "03", title: "experience", navLabel: "Experience", showInNav: true },
-  { id: "projects", index: "04", title: "projects", navLabel: "Projects", showInNav: true },
-  { id: "skills", index: "05", title: "skills", navLabel: "Skills", showInNav: true },
-  { id: "contact", index: "06", title: "contact", navLabel: "Contact", showInNav: true },
+  { id: "contributions", index: "01", title: "contributions", navLabel: "Contributions", showInNav: true },
+  { id: "experience", index: "02", title: "experience", navLabel: "Experience", showInNav: true },
+  { id: "projects", index: "03", title: "projects", navLabel: "Projects", showInNav: true },
+  { id: "skills", index: "04", title: "skills", navLabel: "Skills", showInNav: true },
+  { id: "contact", index: "05", title: "contact", navLabel: "Contact", showInNav: true },
 ];
 
 export const siteConfig: SiteConfig = {
@@ -105,7 +93,6 @@ export const siteConfig: SiteConfig = {
 };
 
 export const navLinks: NavLink[] = [
-  { label: "About", href: "#about" },
   { label: "Contributions", href: "#contributions" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
@@ -133,31 +120,12 @@ export const heroData: HeroData = {
   name: "Nilabhra Adhikari",
   tagline: "I build things for the web.",
   description:
-    "I'm a full-stack developer with 5+ years of experience crafting performant, accessible, and visually polished web applications. Currently focused on building products that make a difference.",
+    "Full-stack developer with 3+ years of experience in React, Next.js, and Node.js.",
   resumeUrl: "/resume.pdf",
-  meta: [
-    { label: "role", value: "full-stack developer" },
-    { label: "focus", value: "react · next.js · node.js" },
-    { label: "status", value: "open to opportunities" },
-  ],
   status: {
     available: true,
     label: "Available for work",
   },
-};
-
-export const aboutData: AboutData = {
-  paragraphs: [
-    "I'm a passionate developer who loves turning complex problems into simple, beautiful, and intuitive solutions. My journey in web development started back in 2018 when I decided to build a custom theme for my blog — turns out hacking together HTML & CSS taught me a lot about the web.",
-    "Fast-forward to today, and I've had the privilege of working at a startup, a large corporation, and a design agency. My main focus these days is building accessible, human-centered products at TechCorp Inc.",
-    "When I'm not at the computer, I'm usually rock climbing, reading sci-fi novels, or experimenting with new coffee brewing techniques.",
-  ],
-  highlights: [
-    { label: "Years Experience", value: "5+" },
-    { label: "Projects Completed", value: "30+" },
-    { label: "Happy Clients", value: "20+" },
-    { label: "Open Source Contributions", value: "50+" },
-  ],
 };
 
 export const experiences: Experience[] = [
@@ -303,16 +271,6 @@ export const skills: Skill[] = [
       "CI/CD",
       "Nginx",
       "Linux",
-    ],
-  },
-  {
-    category: "Practices",
-    items: [
-      "Agile / Scrum",
-      "TDD",
-      "Code Review",
-      "Accessibility (a11y)",
-      "Performance Optimisation",
     ],
   },
 ];

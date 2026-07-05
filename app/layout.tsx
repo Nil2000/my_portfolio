@@ -1,15 +1,29 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { siteConfig } from "@/data/portfolio";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
+});
+
+const ibmPlexSans = IBM_Plex_Sans({
+  variable: "--font-body",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -39,16 +53,21 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("h-full", "antialiased", geistMono.variable, "font-mono")}
+      className={cn(
+        "h-full antialiased",
+        bricolage.variable,
+        ibmPlexSans.variable,
+        ibmPlexMono.variable,
+      )}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-mono">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-body">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
         <SpeedInsights />
         <Analytics />

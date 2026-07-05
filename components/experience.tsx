@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
 import { experiences } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
@@ -45,7 +46,7 @@ export default function Experience() {
             {/* Content */}
             <div className="sm:w-2/3 flex flex-col gap-2">
               <div className="flex items-start gap-2 flex-wrap">
-                <h3 className="text-sm font-bold text-foreground font-mono">
+                <h3 className="text-sm font-semibold text-foreground font-display">
                   {exp.role}
                 </h3>
                 {exp.current && (
@@ -54,15 +55,15 @@ export default function Experience() {
                   </Badge>
                 )}
               </div>
-              <a
+              <Link
                 href={exp.companyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs font-mono text-muted-foreground hover:text-accent-brand transition-colors w-fit"
               >
                 @ {exp.company}
-              </a>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              </Link>
+              <p className="text-sm text-muted-foreground leading-relaxed font-body">
                 {exp.description}
               </p>
               <div className="flex flex-wrap gap-1.5 mt-1">

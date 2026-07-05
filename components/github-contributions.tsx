@@ -1,9 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import GithubIcon from "@/components/ui/github-icon";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/section-header";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ContributionDay {
   date: string;
@@ -19,24 +25,37 @@ interface ContributionsData {
   contributions: ContributionDay[];
 }
 
-
-function getContributionLevel(count: number): number {
-  if (count === 0) return 0;
-  if (count <= 3) return 1;
-  if (count <= 6) return 2;
-  if (count <= 9) return 3;
-  return 4;
-}
+const LEVEL_LABELS = [
+  "No contributions",
+  "1–3 contributions",
+  "4–6 contributions",
+  "7–9 contributions",
+  "10+ contributions",
+] as const;
 
 function getContributionColor(level: number): string {
+  // Ultramarine ramp — matches accent-brand hue
   const colors = [
-    "bg-foreground/20",
-    "bg-foreground/40",
-    "bg-foreground/60",
-    "bg-foreground/80",
-    "bg-foreground",
+    "bg-accent-brand/10",
+    "bg-accent-brand/30",
+    "bg-accent-brand/50",
+    "bg-accent-brand/75",
+    "bg-accent-brand",
   ];
   return colors[level] ?? colors[0];
+}
+
+function formatContributionLabel(day: ContributionDay): string {
+  // ponytail: date-only strings parse as UTC; pin local midnight to avoid day shift
+  const date = new Date(`${day.date}T00:00:00`);
+  const formatted = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  if (day.count === 0) return `No contributions on ${formatted}`;
+  return `${day.count} contribution${day.count === 1 ? "" : "s"} on ${formatted}`;
 }
 
 const monthNames = [
@@ -147,7 +166,7 @@ export default function GithubContributions() {
         transition={{ duration: 0.3 }}
         className="mb-5 -mt-4"
       >
-        <p className="text-xs font-mono text-muted-foreground">
+        <p className="text-xs font-mono text-muted-foreground tabular-nums">
           {data.total.lastYear.toLocaleString()} contributions in the last year
         </p>
       </motion.div>
@@ -175,15 +194,18 @@ export default function GithubContributions() {
                   );
                 }
                 return (
-                  <div
-                    key={dayIndex}
-                    className={`aspect-square w-full rounded-sm ${getContributionColor(
-                      day.level,
-                    )} transition-colors cursor-pointer hover:ring-1 hover:ring-foreground`}
-                    title={`${day.date}: ${day.count} contribution${
-                      day.count !== 1 ? "s" : ""
-                    }`}
-                  />
+                  <Tooltip key={day.date}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className={`aspect-square w-full rounded-sm ${getContributionColor(
+                          day.level,
+                        )} transition-colors cursor-default hover:ring-1 hover:ring-foreground`}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" sideOffset={4}>
+                      {formatContributionLabel(day)}
+                    </TooltipContent>
+                  </Tooltip>
                 );
               })}
             </div>
@@ -191,23 +213,29 @@ export default function GithubContributions() {
         </div>
 
         <div className="mt-4 flex items-center justify-between text-xs font-mono text-muted-foreground">
-          <a
-            href={`https://github.com/nil2000`}
+          <Link
+            href="https://github.com/nil2000"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 hover:text-foreground transition-colors"
           >
             <GithubIcon size={16} />
             github.com/nil2000
-          </a>
+          </Link>
           <div className="flex items-center gap-2">
             <span>less</span>
             <div className="flex gap-1">
               {[0, 1, 2, 3, 4].map((level) => (
-                <div
-                  key={level}
-                  className={`h-3 w-3 rounded-sm ${getContributionColor(level)}`}
-                />
+                <Tooltip key={level}>
+                  <TooltipTrigger asChild>
+                    <div
+                      className={`h-3 w-3 rounded-sm ${getContributionColor(level)}`}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" sideOffset={4}>
+                    {LEVEL_LABELS[level]}
+                  </TooltipContent>
+                </Tooltip>
               ))}
             </div>
             <span>more</span>

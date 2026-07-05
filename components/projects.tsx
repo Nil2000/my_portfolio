@@ -6,6 +6,12 @@ import { projects } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
 import SocialIcon from "./social-icon";
 import SectionHeader from "@/components/section-header";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Link from "next/link";
 
 const stagger = {
   hidden: {},
@@ -40,42 +46,59 @@ export default function Projects() {
             {/* Title row */}
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-sm font-bold text-foreground font-mono">
+                <h3 className="text-sm font-semibold text-foreground font-display">
                   {project.title}
                 </h3>
                 {project.featured && (
-                  <Badge variant="success" className="text-[10px] h-4 px-1.5 shrink-0">
+                  <Badge
+                    variant="success"
+                    className="text-[10px] h-4 px-1.5 shrink-0"
+                  >
                     featured
                   </Badge>
                 )}
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 {project.repoUrl && (
-                  <a
-                    href={project.repoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-accent-brand transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-                    aria-label="Source code"
-                  >
-                    <SocialIcon name="Github" size={16} />
-                  </a>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        href={project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-accent-brand transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+                        aria-label="Source code"
+                      >
+                        <SocialIcon name="Github" size={16} />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" sideOffset={4}>
+                      Source code
+                    </TooltipContent>
+                  </Tooltip>
                 )}
                 {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-accent-brand transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-                    aria-label="Live demo"
-                  >
-                    <ExternalLinkIcon size={16} />
-                  </a>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-accent-brand transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+                        aria-label="Live demo"
+                      >
+                        <ExternalLinkIcon size={16} />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" sideOffset={4}>
+                      Live demo
+                    </TooltipContent>
+                  </Tooltip>
                 )}
               </div>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed font-body">
               {project.description}
             </p>
 

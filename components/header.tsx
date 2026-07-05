@@ -1,12 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import UnorderedListIcon from "@/components/ui/unordered-list-icon";
 import XIcon from "@/components/ui/x-icon";
 import { motion, AnimatePresence } from "motion/react";
 import { sections, siteConfig } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/theme-toggle";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const navSections = sections.filter((s) => s.showInNav);
 
@@ -22,13 +28,13 @@ export default function Header() {
     >
       <nav className="mx-auto flex max-w-3xl w-full items-center justify-between px-6 py-3">
         {/* Logo */}
-        <a
+        <Link
           href="#"
-          className="text-sm font-bold tracking-tight text-foreground font-mono focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+          className="font-display text-base font-bold tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
         >
-          {siteConfig.name.split(" ")[0].toLowerCase()}
-          <span className="text-accent-brand">_</span>
-        </a>
+          {siteConfig.name.split(" ")[0]}
+          <span className="text-accent-brand">.</span>
+        </Link>
 
         <div className="flex items-center gap-4">
           {/* Desktop nav */}
@@ -40,7 +46,7 @@ export default function Header() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.08 + i * 0.04, duration: 0.35 }}
               >
-                <a
+                <Link
                   href={`#${section.id}`}
                   className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground transition-colors hover:text-accent-brand lowercase focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground rounded-sm px-0.5"
                 >
@@ -48,22 +54,33 @@ export default function Header() {
                     {section.index}
                   </span>
                   {section.navLabel.toLowerCase()}
-                </a>
+                </Link>
               </motion.li>
             ))}
           </ul>
 
           <ThemeToggle />
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden text-muted-foreground hover:text-foreground h-7 w-7"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <XIcon size={16} /> : <UnorderedListIcon size={16} />}
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden text-muted-foreground hover:text-foreground h-7 w-7"
+                onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              >
+                {mobileOpen ? (
+                  <XIcon size={16} />
+                ) : (
+                  <UnorderedListIcon size={16} />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" sideOffset={4}>
+              {mobileOpen ? "Close menu" : "Open menu"}
+            </TooltipContent>
+          </Tooltip>
         </div>
       </nav>
 
@@ -79,7 +96,7 @@ export default function Header() {
           >
             {navSections.map((section) => (
               <li key={section.id}>
-                <a
+                <Link
                   href={`#${section.id}`}
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-2 py-2 text-sm text-muted-foreground transition-colors hover:text-accent-brand lowercase focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground rounded-sm"
@@ -88,7 +105,7 @@ export default function Header() {
                     {section.index}
                   </span>
                   {section.navLabel.toLowerCase()}
-                </a>
+                </Link>
               </li>
             ))}
           </motion.ul>

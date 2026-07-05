@@ -19,11 +19,11 @@ export default function SectionHeader({ id }: SectionHeaderProps) {
       transition={{ duration: 0.4 }}
       className="mb-8 flex items-center gap-3"
     >
-      <span className="text-xs font-mono text-accent-brand tabular-nums shrink-0 font-bold">
+      <span className="text-[10px] font-mono text-accent-brand tabular-nums shrink-0 font-bold tracking-widest">
         {section.index}
       </span>
-      <span className="text-xs font-mono text-muted-foreground shrink-0">/</span>
-      <h2 className="text-xs font-mono font-bold text-foreground uppercase tracking-widest shrink-0 m-0">
+      <span className="text-xs font-mono text-muted-foreground/40 shrink-0">/</span>
+      <h2 className="font-display text-base font-semibold text-foreground shrink-0 m-0 tracking-tight">
         {section.title}
       </h2>
       <div className="section-rule" />

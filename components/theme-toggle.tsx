@@ -6,6 +6,11 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import BrightnessDownIcon from "@/components/ui/brightness-down-icon";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -29,23 +34,29 @@ export default function ThemeToggle() {
     );
   }
 
+  const label =
+    resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      className="size-9 shrink-0"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      aria-label={
-        resolvedTheme === "dark"
-          ? "Switch to light mode"
-          : "Switch to dark mode"
-      }
-    >
-      {resolvedTheme === "dark" ? (
-        <BrightnessDownIcon size={16} />
-      ) : (
-        <MoonIcon size={16} />
-      )}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-9 shrink-0"
+          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+          aria-label={label}
+        >
+          {resolvedTheme === "dark" ? (
+            <BrightnessDownIcon size={16} />
+          ) : (
+            <MoonIcon size={16} />
+          )}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent side="bottom" sideOffset={4}>
+        {label}
+      </TooltipContent>
+    </Tooltip>
   );
 }
