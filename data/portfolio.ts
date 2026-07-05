@@ -131,34 +131,31 @@ export const heroData: HeroData = {
 export const experiences: Experience[] = [
   {
     id: "exp-1",
-    role: "Senior Frontend Engineer",
-    company: "TechCorp Inc.",
-    companyUrl: "https://techcorp.example.com",
-    period: "Jan 2023 — Present",
+    role: "Associate Software Engineer",
+    company: "Accenture",
+    companyUrl: "https://www.accenture.com",
+    period: "Jul 2023 — Present",
     description:
-      "Lead the frontend architecture for the company's flagship SaaS product. Migrated legacy jQuery codebase to React/Next.js, improving page load times by 60%. Mentor a team of 4 junior developers and conduct regular code reviews.",
-    technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS", "GraphQL"],
+      "Building a translation application with React and Context API, integrated with a Flask backend for smooth data handling. Developed responsive web apps with .NET MVC and Azure Blob Storage for secure file operations. Integrated a web application with Salesforce for seamless data exchange, collaborating with the Salesforce team and private design libraries for a polished UI.",
+    technologies: [
+      "React",
+      "Context API",
+      "Flask",
+      ".NET MVC",
+      "Azure Blob Storage",
+      "Salesforce",
+    ],
     current: true,
   },
   {
     id: "exp-2",
-    role: "Full-Stack Developer",
-    company: "WebStudio Agency",
-    companyUrl: "https://webstudio.example.com",
-    period: "Mar 2021 — Dec 2022",
+    role: "Software Engineer Intern",
+    company: "Coral",
+    companyUrl: "https://www.linkedin.com/company/hydracoral",
+    period: "Jan 2023 — Apr 2023",
     description:
-      "Built and maintained 15+ client websites and web applications. Implemented CI/CD pipelines that reduced deployment time by 40%. Collaborated directly with designers and clients to translate Figma mockups into pixel-perfect, responsive UIs.",
-    technologies: ["Vue.js", "Node.js", "PostgreSQL", "Docker", "AWS"],
-  },
-  {
-    id: "exp-3",
-    role: "Junior Developer",
-    company: "StartupXYZ",
-    companyUrl: "https://startupxyz.example.com",
-    period: "Jun 2019 — Feb 2021",
-    description:
-      "Developed core features for the company's e-commerce platform serving 10K+ daily active users. Built RESTful APIs and integrated third-party payment processing. Participated in agile sprints and contributed to technical documentation.",
-    technologies: ["React", "Express.js", "MongoDB", "Redis", "Stripe API"],
+      "Built a mobile application from scratch with Flutter, integrating public APIs for core functionality. Shipped one-to-one encrypted chat, a scratch-card rewards system, and video/audio calling. Integrated Razorpay for payments and pair-programmed with the team to debug issues and ship a production-ready app.",
+    technologies: ["Flutter", "REST APIs", "Razorpay", "WebRTC"],
   },
 ];
 
