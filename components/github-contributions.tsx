@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import GithubIcon from "@/components/ui/github-icon";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/section-header";
 import {
@@ -76,6 +76,7 @@ const monthNames = [
 export default function GithubContributions() {
   const [data, setData] = useState<ContributionsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     async function fetchData() {
@@ -96,12 +97,20 @@ export default function GithubContributions() {
     fetchData();
   }, []);
 
-  if (
-    loading ||
-    !data ||
-    !data.contributions ||
-    data.contributions.length === 0
-  ) {
+  // Stable-height skeleton prevents layout shift while fetching
+  if (loading) {
+    return (
+      <section id="contributions" className="w-full">
+        <SectionHeader id="contributions" />
+        <div className="mb-5 -mt-4 h-4 w-48 rounded bg-muted animate-pulse" />
+        <div className="w-full pb-4">
+          <div className="h-[88px] w-full rounded-sm bg-muted/40 animate-pulse" />
+        </div>
+      </section>
+    );
+  }
+
+  if (!data || !data.contributions || data.contributions.length === 0) {
     return null;
   }
 
@@ -109,15 +118,12 @@ export default function GithubContributions() {
   const weeks: (ContributionDay | null)[][] = [];
   let currentWeek: (ContributionDay | null)[] = [];
 
-  // Get first day's day of the week (0 = Sunday, 6 = Saturday)
   const firstDate = new Date(contributions[0].date);
-  // Add timezone offset to prevent date shifting
   const localFirstDate = new Date(
     firstDate.getTime() + firstDate.getTimezoneOffset() * 60000,
   );
   const firstDayOfWeek = localFirstDate.getDay();
 
-  // Pad the first week
   for (let i = 0; i < firstDayOfWeek; i++) {
     currentWeek.push(null);
   }
@@ -130,7 +136,6 @@ export default function GithubContributions() {
     }
   });
 
-  // Pad the last week
   if (currentWeek.length > 0) {
     while (currentWeek.length < 7) {
       currentWeek.push(null);
@@ -160,7 +165,7 @@ export default function GithubContributions() {
       <SectionHeader id="contributions" />
 
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.3 }}
@@ -172,13 +177,14 @@ export default function GithubContributions() {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4, delay: 0.1 }}
         className="w-full pb-4"
       >
-        <div className="flex w-full gap-[3px]">
+        {/* aria-hidden: decorative heatmap; accessible summary is in the text above and the GitHub link below */}
+        <div className="flex w-full gap-[3px]" aria-hidden="true">
           {weeks.map((week, weekIndex) => (
             <div
               key={weekIndex}
@@ -217,12 +223,12 @@ export default function GithubContributions() {
             href="https://github.com/nil2000"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 hover:text-foreground transition-colors"
+            className="flex items-center gap-2 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground rounded-sm"
           >
             <GithubIcon size={16} />
             github.com/nil2000
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" aria-hidden="true">
             <span>less</span>
             <div className="flex gap-1">
               {[0, 1, 2, 3, 4].map((level) => (

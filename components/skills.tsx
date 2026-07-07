@@ -1,33 +1,21 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { skills } from "@/data/portfolio";
 import SectionHeader from "@/components/section-header";
 import TechIcon from "@/components/tech-icon";
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
-};
-
-const rowVariant = {
-  hidden: { opacity: 0, y: 6 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-};
-
-const chipVariant = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.2 } },
-};
+import { listStagger, listItem, chipVariant } from "@/lib/motion";
 
 export default function Skills() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section id="skills" className="w-full">
       <SectionHeader id="skills" />
 
       <motion.div
-        variants={stagger}
-        initial="hidden"
+        variants={listStagger}
+        initial={reduceMotion ? "visible" : "hidden"}
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
         className="flex flex-col"
@@ -35,7 +23,7 @@ export default function Skills() {
         {skills.map((group, idx) => (
           <motion.div
             key={group.category}
-            variants={rowVariant}
+            variants={listItem}
             className={`flex flex-col sm:flex-row gap-3 sm:gap-8 py-4 ${
               idx !== 0 ? "border-t border-border" : ""
             }`}
@@ -49,14 +37,14 @@ export default function Skills() {
 
             {/* Chip grid */}
             <motion.div
-              variants={stagger}
+              variants={listStagger}
               className="sm:w-3/4 flex flex-wrap gap-2"
             >
               {group.items.map((item) => (
                 <motion.span
                   key={item}
                   variants={chipVariant}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-border bg-muted/50 text-xs font-mono text-muted-foreground hover:border-accent-brand hover:text-accent-brand transition-colors cursor-default"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-border bg-muted/50 text-xs font-mono text-muted-foreground cursor-default"
                 >
                   <TechIcon name={item} size={12} />
                   {item}

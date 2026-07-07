@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { sections } from "@/data/portfolio";
 
 interface SectionHeaderProps {
@@ -9,11 +9,12 @@ interface SectionHeaderProps {
 
 export default function SectionHeader({ id }: SectionHeaderProps) {
   const section = sections.find((s) => s.id === id);
+  const reduceMotion = useReducedMotion();
   if (!section) return null;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
+      initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}

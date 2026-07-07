@@ -7,6 +7,14 @@ export const alt = siteConfig.title;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// Blueprint palette — dark theme equivalents of OKLCH tokens
+const BG = "#1c1d2e";       // ≈ oklch(0.16 0.03 265)
+const SURFACE = "#242538";  // ≈ oklch(0.2 0.03 265)
+const INK = "#eeeef5";      // ≈ oklch(0.94 0.01 265)
+const MUTED = "#9495b0";    // ≈ oklch(0.68 0.04 265)
+const ACCENT = "#6b78e8";   // ≈ oklch(0.7 0.15 265) ultramarine
+const BORDER = "#373852";   // ≈ oklch(0.32 0.04 265)
+
 export default async function Image() {
   const profilePath = join(
     process.cwd(),
@@ -20,7 +28,7 @@ export default async function Image() {
     (
       <div
         style={{
-          background: "#000000",
+          background: BG,
           width: "100%",
           height: "100%",
           display: "flex",
@@ -31,6 +39,7 @@ export default async function Image() {
           fontFamily: "monospace",
         }}
       >
+        {/* Left: text block */}
         <div
           style={{
             display: "flex",
@@ -40,55 +49,72 @@ export default async function Image() {
             maxWidth: 720,
           }}
         >
+          {/* Mono annotation: index · role */}
           <div
             style={{
-              fontSize: 18,
-              color: "#a3a3a3",
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              fontSize: 16,
+              color: ACCENT,
               textTransform: "uppercase",
-              letterSpacing: "0.18em",
+              letterSpacing: "0.16em",
+              fontWeight: 700,
             }}
           >
-            {heroData.greeting}
+            <span>01</span>
+            <span style={{ color: MUTED, fontWeight: 400 }}>/</span>
+            <span style={{ color: MUTED, fontWeight: 400 }}>{heroData.greeting}</span>
           </div>
+
+          {/* Name */}
           <div
             style={{
-              fontSize: 56,
+              fontSize: 58,
               fontWeight: 700,
-              color: "#ffffff",
+              color: INK,
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
             }}
           >
             {siteConfig.name}
           </div>
-          <div style={{ fontSize: 26, color: "#d4d4d4", lineHeight: 1.35 }}>
+
+          {/* Tagline */}
+          <div style={{ fontSize: 26, color: MUTED, lineHeight: 1.35 }}>
             {heroData.tagline}
           </div>
+
+          {/* URL pill */}
           <div
             style={{
-              marginTop: 12,
+              marginTop: 8,
               display: "flex",
               alignItems: "center",
-              background: "#34d399",
-              color: "#000000",
-              padding: "14px 28px",
-              borderRadius: 6,
-              fontSize: 22,
-              fontWeight: 700,
+              border: `1px solid ${BORDER}`,
+              background: SURFACE,
+            color: ACCENT,
+            padding: "10px 20px",
+            borderRadius: 6,
+            fontSize: 18,
+            fontWeight: 500,
             }}
           >
-            View Portfolio →
+            {siteConfig.url}
           </div>
         </div>
+
+        {/* Right: avatar */}
         <img
           src={profileSrc}
-          width={240}
-          height={240}
+          alt={siteConfig.name}
+          width={220}
+          height={220}
           style={{
-            borderRadius: 12,
+            borderRadius: 8,
             objectFit: "cover",
-            border: "3px solid #404040",
-            marginLeft: 48,
+            border: `2px solid ${BORDER}`,
+            marginLeft: 56,
           }}
         />
       </div>

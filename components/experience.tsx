@@ -1,29 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { experiences } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
 import SectionHeader from "@/components/section-header";
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
-
-const itemVariant = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-};
+import { listStagger, listItem } from "@/lib/motion";
 
 export default function Experience() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section id="experience" className="w-full">
       <SectionHeader id="experience" />
 
       <motion.div
-        variants={stagger}
-        initial="hidden"
+        variants={listStagger}
+        initial={reduceMotion ? "visible" : "hidden"}
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
         className="flex flex-col"
@@ -31,7 +24,7 @@ export default function Experience() {
         {experiences.map((exp, idx) => (
           <motion.div
             key={exp.id}
-            variants={itemVariant}
+            variants={listItem}
             className={`flex flex-col sm:flex-row gap-2 sm:gap-8 py-6 ${
               idx !== 0 ? "border-t border-border" : ""
             }`}
@@ -59,7 +52,7 @@ export default function Experience() {
                 href={exp.companyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-mono text-muted-foreground hover:text-accent-brand transition-colors w-fit"
+                className="text-xs font-mono text-muted-foreground hover:text-accent-brand transition-colors w-fit focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground rounded-sm"
               >
                 @ {exp.company}
               </Link>

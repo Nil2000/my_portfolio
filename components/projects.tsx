@@ -1,7 +1,7 @@
 "use client";
 
 import ExternalLinkIcon from "@/components/ui/external-link-icon";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { projects } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
 import SocialIcon from "./social-icon";
@@ -12,25 +12,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Link from "next/link";
-
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const itemVariant = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-};
+import { listStagger, listItem } from "@/lib/motion";
 
 export default function Projects() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section id="projects" className="w-full">
       <SectionHeader id="projects" />
 
       <motion.div
-        variants={stagger}
-        initial="hidden"
+        variants={listStagger}
+        initial={reduceMotion ? "visible" : "hidden"}
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
         className="flex flex-col"
@@ -38,7 +31,7 @@ export default function Projects() {
         {projects.map((project, idx) => (
           <motion.div
             key={project.id}
-            variants={itemVariant}
+            variants={listItem}
             className={`flex flex-col gap-2 py-5 group ${
               idx !== 0 ? "border-t border-border" : ""
             }`}

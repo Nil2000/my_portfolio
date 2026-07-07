@@ -26,7 +26,7 @@ export default function Header() {
       transition={{ duration: 0.45, ease: "easeOut" }}
       className="fixed top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur-md"
     >
-      <nav className="mx-auto flex max-w-3xl w-full items-center justify-between px-6 py-3">
+      <nav className="mx-auto flex max-w-4xl w-full items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link
           href="#"
