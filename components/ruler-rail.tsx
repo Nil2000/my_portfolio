@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { sections } from "@/data/portfolio";
 
 const navSections = sections.filter((s) => s.showInNav);
@@ -64,10 +65,19 @@ export default function RulerRail() {
       })}
 
       {/* Sticky active-section index */}
-      <div className="sticky top-32 flex justify-center">
-        <span className="text-[10px] font-mono font-bold text-accent-brand tabular-nums leading-none bg-background px-0.5">
-          {activeSection?.index ?? "01"}
-        </span>
+      <div className="sticky top-32 flex justify-center overflow-hidden">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={activeSection?.index ?? "01"}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2 }}
+            className="text-[10px] font-mono font-bold text-accent-brand tabular-nums leading-none bg-background px-0.5"
+          >
+            {activeSection?.index ?? "01"}
+          </motion.span>
+        </AnimatePresence>
       </div>
     </div>
   );

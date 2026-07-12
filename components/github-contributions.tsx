@@ -5,6 +5,7 @@ import GithubIcon from "@/components/ui/github-icon";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import SectionHeader from "@/components/section-header";
+import { NumberTicker } from "@/components/ui/number-ticker";
 import {
   Tooltip,
   TooltipContent,
@@ -172,7 +173,15 @@ export default function GithubContributions() {
         className="mb-5 -mt-4"
       >
         <p className="text-xs font-mono text-muted-foreground tabular-nums">
-          {data.total.lastYear.toLocaleString()} contributions in the last year
+          {reduceMotion ? (
+            data.total.lastYear.toLocaleString()
+          ) : (
+            <NumberTicker
+              value={data.total.lastYear}
+              className="text-xs font-mono text-muted-foreground tabular-nums"
+            />
+          )}{" "}
+          contributions in the last year
         </p>
       </motion.div>
 

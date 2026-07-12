@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { sections } from "@/data/portfolio";
+import { HyperText } from "@/components/ui/hyper-text";
 
 interface SectionHeaderProps {
   id: string;
@@ -24,9 +25,20 @@ export default function SectionHeader({ id }: SectionHeaderProps) {
         {section.index}
       </span>
       <span className="text-xs font-mono text-muted-foreground/40 shrink-0">/</span>
-      <h2 className="font-display text-base font-semibold text-foreground shrink-0 m-0 tracking-tight">
-        {section.title}
-      </h2>
+      {reduceMotion ? (
+        <h2 className="font-display text-base font-semibold text-foreground shrink-0 m-0 tracking-tight">
+          {section.title}
+        </h2>
+      ) : (
+        <HyperText
+          as="h2"
+          startOnView
+          duration={600}
+          className="font-display text-base font-semibold text-foreground shrink-0 m-0 p-0 tracking-tight overflow-visible"
+        >
+          {section.title}
+        </HyperText>
+      )}
       <div className="section-rule" />
     </motion.div>
   );

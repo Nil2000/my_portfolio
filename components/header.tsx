@@ -94,8 +94,13 @@ export default function Header() {
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="flex flex-col gap-1 overflow-hidden border-t border-border bg-background px-6 py-4 md:hidden font-mono"
           >
-            {navSections.map((section) => (
-              <li key={section.id}>
+            {navSections.map((section, i) => (
+              <motion.li
+                key={section.id}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 + i * 0.04, duration: 0.25 }}
+              >
                 <Link
                   href={`#${section.id}`}
                   onClick={() => setMobileOpen(false)}
@@ -106,7 +111,7 @@ export default function Header() {
                   </span>
                   {section.navLabel.toLowerCase()}
                 </Link>
-              </li>
+              </motion.li>
             ))}
           </motion.ul>
         )}

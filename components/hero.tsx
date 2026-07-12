@@ -7,6 +7,8 @@ import { heroData, siteConfig, socialLinks } from "@/data/portfolio";
 import SocialIcon from "./social-icon";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { TextAnimate } from "@/components/ui/text-animate";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +21,12 @@ const fadeUp = (delay: number) =>
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5, delay, ease: "easeOut" as const },
   }) as const;
+
+// Greeting types first; name starts right after so the row reads as one continuous line.
+const GREETING_TYPE_START = 200;
+const GREETING_TYPE_SPEED = 35;
+const GREETING_TYPE_DELAY =
+  GREETING_TYPE_START + heroData.greeting.length * GREETING_TYPE_SPEED + 150;
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
@@ -33,13 +41,45 @@ export default function Hero() {
             {...fadeUp(0.05)}
             className="flex items-center gap-2 flex-wrap"
           >
-            <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-              {heroData.greeting}
-            </span>
-            <span className="text-xs font-mono text-muted-foreground/40">·</span>
-            <span className="text-sm font-mono font-semibold text-foreground">
-              {heroData.name}
-            </span>
+            {reduceMotion ? (
+              <>
+                <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
+                  {heroData.greeting}
+                </span>
+                <span className="text-xs font-mono text-muted-foreground/40">
+                  ·
+                </span>
+                <span className="text-sm font-mono font-semibold text-foreground">
+                  {heroData.name}
+                </span>
+              </>
+            ) : (
+              <>
+                <TypingAnimation
+                  as="span"
+                  delay={GREETING_TYPE_START}
+                  duration={GREETING_TYPE_SPEED}
+                  showCursor
+                  cursorStyle="underscore"
+                  className="text-xs font-mono text-muted-foreground uppercase tracking-widest"
+                >
+                  {heroData.greeting}
+                </TypingAnimation>
+                <span className="text-xs font-mono text-muted-foreground/40">
+                  ·
+                </span>
+                <TypingAnimation
+                  as="span"
+                  delay={GREETING_TYPE_DELAY}
+                  duration={45}
+                  showCursor
+                  cursorStyle="underscore"
+                  className="text-sm font-mono font-semibold text-foreground"
+                >
+                  {heroData.name}
+                </TypingAnimation>
+              </>
+            )}
           </motion.div>
 
           {/* Status badge */}
@@ -58,12 +98,24 @@ export default function Hero() {
           )}
 
           {/* Display headline — the thesis */}
-          <motion.h1
-            {...fadeUp(0.2)}
-            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mt-1"
-          >
-            {heroData.tagline}
-          </motion.h1>
+          {reduceMotion ? (
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mt-1">
+              {heroData.tagline}
+            </h1>
+          ) : (
+            <TextAnimate
+              as="h1"
+              by="word"
+              animation="blurInUp"
+              startOnView={false}
+              once
+              delay={0.2}
+              duration={0.6}
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mt-1"
+            >
+              {heroData.tagline}
+            </TextAnimate>
+          )}
 
           {/* Description */}
           <motion.p

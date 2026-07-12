@@ -1,0 +1,8 @@
+{
+  "framework": "nextjs-app-router",
+  "devServerUrl": "http://localhost:3000",
+  "files": ["app/layout.tsx"],
+  "insertBefore": "</body>",
+  "commentSyntax": ["/*", "*/"],
+  "cspChecked": false
+}

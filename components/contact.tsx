@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { contactData } from "@/data/portfolio";
 import SectionHeader from "@/components/section-header";
+import { TextAnimate } from "@/components/ui/text-animate";
 
 export default function Contact() {
   const reduceMotion = useReducedMotion();
@@ -29,9 +30,23 @@ export default function Contact() {
             href={`mailto:${contactData.email}`}
             className="group inline-flex items-baseline gap-3 w-fit focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground rounded-sm"
           >
-            <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground border-b border-transparent group-hover:border-accent-brand group-hover:text-accent-brand transition-colors leading-tight">
-              {contactData.email}
-            </span>
+            {reduceMotion ? (
+              <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground border-b border-transparent group-hover:border-accent-brand group-hover:text-accent-brand transition-colors leading-tight">
+                {contactData.email}
+              </span>
+            ) : (
+              <TextAnimate
+                as="span"
+                by="character"
+                animation="slideUp"
+                once
+                delay={0.1}
+                duration={0.5}
+                className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground border-b border-transparent group-hover:border-accent-brand group-hover:text-accent-brand transition-colors leading-tight"
+              >
+                {contactData.email}
+              </TextAnimate>
+            )}
             <span className="text-xs font-mono text-muted-foreground group-hover:text-accent-brand transition-colors uppercase tracking-widest hidden sm:inline">
               ↗
             </span>
