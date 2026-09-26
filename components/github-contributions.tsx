@@ -35,13 +35,12 @@ const LEVEL_LABELS = [
 ] as const;
 
 function getContributionColor(level: number): string {
-  // Ultramarine ramp — matches accent-brand hue
   const colors = [
-    "bg-accent-brand/10",
-    "bg-accent-brand/30",
-    "bg-accent-brand/50",
-    "bg-accent-brand/75",
-    "bg-accent-brand",
+    "bg-status/10",
+    "bg-status/30",
+    "bg-status/50",
+    "bg-status/75",
+    "bg-status",
   ];
   return colors[level] ?? colors[0];
 }
@@ -101,7 +100,7 @@ export default function GithubContributions() {
   // Stable-height skeleton prevents layout shift while fetching
   if (loading) {
     return (
-      <section id="contributions" className="w-full">
+      <section id="contributions" className="w-full scroll-mt-24">
         <SectionHeader id="contributions" />
         <div className="mb-5 -mt-4 h-4 w-48 rounded bg-muted animate-pulse" />
         <div className="w-full pb-4">
@@ -162,7 +161,7 @@ export default function GithubContributions() {
   });
 
   return (
-    <section id="contributions" className="w-full">
+    <section id="contributions" className="w-full scroll-mt-24">
       <SectionHeader id="contributions" />
 
       <motion.div
@@ -214,7 +213,7 @@ export default function GithubContributions() {
                       <div
                         className={`aspect-square w-full rounded-sm ${getContributionColor(
                           day.level,
-                        )} transition-colors cursor-default hover:ring-1 hover:ring-foreground`}
+                        )} cursor-default transition-colors hover:ring-1 hover:ring-status-ink`}
                       />
                     </TooltipTrigger>
                     <TooltipContent side="top" sideOffset={4}>
@@ -232,7 +231,7 @@ export default function GithubContributions() {
             href="https://github.com/nil2000"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground rounded-sm"
+            className="flex items-center gap-2 rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <GithubIcon size={16} />
             github.com/nil2000

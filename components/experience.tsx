@@ -7,11 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import SectionHeader from "@/components/section-header";
 import { listStagger, listItem } from "@/lib/motion";
 
+const linkFocus =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
+
 export default function Experience() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="experience" className="w-full">
+    <section id="experience" className="w-full scroll-mt-24">
       <SectionHeader id="experience" />
 
       <motion.div
@@ -22,29 +25,22 @@ export default function Experience() {
         className="flex flex-col"
       >
         {experiences.map((exp, idx) => (
-          <motion.div
+          <motion.article
             key={exp.id}
             variants={listItem}
-            className={`flex flex-col sm:flex-row gap-2 sm:gap-8 py-6 ${
+            className={`flex flex-col gap-2 py-6 sm:grid sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-8 ${
               idx !== 0 ? "border-t border-border" : ""
             }`}
           >
-            {/* Period */}
-            <div className="sm:w-1/3 shrink-0">
-              <p className="text-xs font-mono text-muted-foreground tabular-nums pt-0.5">
-                {exp.period}
-              </p>
-            </div>
-
-            {/* Content */}
-            <div className="sm:w-2/3 flex flex-col gap-2">
-              <div className="flex items-start gap-2 flex-wrap">
-                <h3 className="text-sm font-semibold text-foreground font-display">
-                  {exp.role}
-                </h3>
+            <p className="font-mono text-xs text-muted-foreground tabular-nums">
+              {exp.period}
+            </p>
+            <div className="flex min-w-0 flex-col gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-sm font-medium text-foreground">{exp.role}</h3>
                 {exp.current && (
-                  <Badge variant="success" className="text-[10px] h-4 px-1.5 shrink-0">
-                    Current
+                  <Badge variant="success" className="h-4 shrink-0 px-1.5 text-[10px]">
+                    current
                   </Badge>
                 )}
               </div>
@@ -52,26 +48,26 @@ export default function Experience() {
                 href={exp.companyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-mono text-muted-foreground hover:text-accent-brand transition-colors w-fit focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground rounded-sm"
+                className={`w-fit font-mono text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline ${linkFocus}`}
               >
-                @ {exp.company}
+                @{exp.company}
               </Link>
-              <p className="text-sm text-muted-foreground leading-relaxed font-body">
+              <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
                 {exp.description}
               </p>
-              <div className="flex flex-wrap gap-1.5 mt-1">
+              <div className="mt-1 flex flex-wrap gap-1.5">
                 {exp.technologies.map((tech) => (
                   <Badge
                     key={tech}
                     variant="outline"
-                    className="font-mono text-xs rounded-md bg-transparent text-muted-foreground border-border"
+                    className="rounded-md border-border bg-transparent font-mono text-xs font-normal text-muted-foreground"
                   >
                     {tech}
                   </Badge>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </motion.article>
         ))}
       </motion.div>
     </section>

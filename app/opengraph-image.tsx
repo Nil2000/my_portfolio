@@ -7,13 +7,12 @@ export const alt = siteConfig.title;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Blueprint palette — dark theme equivalents of OKLCH tokens
-const BG = "#1c1d2e";       // ≈ oklch(0.16 0.03 265)
-const SURFACE = "#242538";  // ≈ oklch(0.2 0.03 265)
-const INK = "#eeeef5";      // ≈ oklch(0.94 0.01 265)
-const MUTED = "#9495b0";    // ≈ oklch(0.68 0.04 265)
-const ACCENT = "#6b78e8";   // ≈ oklch(0.7 0.15 265) ultramarine
-const BORDER = "#373852";   // ≈ oklch(0.32 0.04 265)
+const BG = "#14171c";
+const SURFACE = "#1c2026";
+const INK = "#f2f3ef";
+const MUTED = "#a3abb6";
+const ACCENT = "#3dcdb8";
+const BORDER = "#31363f";
 
 export default async function Image() {
   const profilePath = join(
@@ -49,22 +48,20 @@ export default async function Image() {
             maxWidth: 720,
           }}
         >
-          {/* Mono annotation: index · role */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
               gap: 10,
-              fontSize: 16,
+              fontSize: 18,
               color: ACCENT,
-              textTransform: "uppercase",
-              letterSpacing: "0.16em",
               fontWeight: 700,
             }}
           >
-            <span>01</span>
-            <span style={{ color: MUTED, fontWeight: 400 }}>/</span>
-            <span style={{ color: MUTED, fontWeight: 400 }}>{heroData.greeting}</span>
+            <span>commit {heroData.hash}</span>
+            <span style={{ color: MUTED, fontWeight: 400 }}>
+              HEAD -&gt; main
+            </span>
           </div>
 
           {/* Name */}
@@ -82,7 +79,7 @@ export default async function Image() {
 
           {/* Tagline */}
           <div style={{ fontSize: 26, color: MUTED, lineHeight: 1.35 }}>
-            {heroData.tagline}
+            {heroData.tagline.replace("\n", " ")}
           </div>
 
           {/* URL pill */}

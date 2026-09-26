@@ -2,44 +2,34 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { sections } from "@/data/portfolio";
-import { HyperText } from "@/components/ui/hyper-text";
 
 interface SectionHeaderProps {
   id: string;
 }
 
 export default function SectionHeader({ id }: SectionHeaderProps) {
-  const section = sections.find((s) => s.id === id);
+  const section = sections.find((item) => item.id === id);
   const reduceMotion = useReducedMotion();
   if (!section) return null;
 
   return (
     <motion.div
-      initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}
-      className="mb-8 flex items-center gap-3"
+      className="mb-8 flex items-baseline gap-3"
     >
-      <span className="text-[10px] font-mono text-accent-brand tabular-nums shrink-0 font-bold tracking-widest">
-        {section.index}
+      <span
+        aria-hidden="true"
+        className="font-mono text-[11px] font-medium text-muted-foreground"
+      >
+        {section.hash}
       </span>
-      <span className="text-xs font-mono text-muted-foreground/40 shrink-0">/</span>
-      {reduceMotion ? (
-        <h2 className="font-display text-base font-semibold text-foreground shrink-0 m-0 tracking-tight">
-          {section.title}
-        </h2>
-      ) : (
-        <HyperText
-          as="h2"
-          startOnView
-          duration={600}
-          className="font-display text-base font-semibold text-foreground shrink-0 m-0 p-0 tracking-tight overflow-visible"
-        >
-          {section.title}
-        </HyperText>
-      )}
-      <div className="section-rule" />
+      <h2 className="font-mono text-sm font-medium text-foreground">
+        {section.title}
+      </h2>
+      <div className="h-px flex-1 bg-border" />
     </motion.div>
   );
 }

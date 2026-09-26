@@ -17,11 +17,11 @@ export interface HeroStatus {
 }
 
 export interface HeroData {
-  greeting: string;
   name: string;
   tagline: string;
   description: string;
-  resumeUrl: string;
+  hash: string;
+  ref: string;
   status: HeroStatus;
 }
 
@@ -43,6 +43,7 @@ export interface Project {
   technologies: string[];
   liveUrl?: string;
   repoUrl?: string;
+  image?: string;
   featured: boolean;
 }
 
@@ -67,7 +68,7 @@ export interface SiteConfig {
 
 export interface Section {
   id: string;
-  index: string;
+  hash: string;
   title: string;
   navLabel: string;
   showInNav: boolean;
@@ -76,27 +77,57 @@ export interface Section {
 // ─── Data ────────────────────────────────────────────
 
 export const sections: Section[] = [
-  { id: "contributions", index: "01", title: "contributions", navLabel: "Contributions", showInNav: true },
-  { id: "experience", index: "02", title: "experience", navLabel: "Experience", showInNav: true },
-  { id: "projects", index: "03", title: "projects", navLabel: "Projects", showInNav: true },
-  { id: "skills", index: "04", title: "skills", navLabel: "Skills", showInNav: true },
-  { id: "contact", index: "05", title: "contact", navLabel: "Contact", showInNav: true },
+  {
+    id: "contributions",
+    hash: "a91e0c4",
+    title: "activity",
+    navLabel: "Activity",
+    showInNav: true,
+  },
+  {
+    id: "experience",
+    hash: "c3d18b2",
+    title: "experience",
+    navLabel: "Experience",
+    showInNav: true,
+  },
+  {
+    id: "projects",
+    hash: "e5b7a90",
+    title: "projects",
+    navLabel: "Projects",
+    showInNav: true,
+  },
+  {
+    id: "skills",
+    hash: "f0d2e61",
+    title: "tags",
+    navLabel: "Tags",
+    showInNav: true,
+  },
+  {
+    id: "contact",
+    hash: "0b8c7d3",
+    title: "contact",
+    navLabel: "Contact",
+    showInNav: true,
+  },
 ];
 
 export const siteConfig: SiteConfig = {
   name: "Nilabhra Adhikari",
-  title: "Nilabhra Adhikari — Full-Stack Developer",
+  title: "Nilabhra Adhikari — Full-Stack Engineer",
   description:
-    "Full-stack developer specialising in React, Next.js, and Node.js. Building elegant solutions to complex problems.",
+    "Full-stack engineer. I ship the queue, the worker, and the UI on top of them.",
   url: "https://nilabhra.info",
   profileImage: "/my-pfp.jpg",
 };
 
 export const navLinks: NavLink[] = [
-  { label: "Contributions", href: "#contributions" },
+  { label: "Activity", href: "#contributions" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
+  { label: "Tags", href: "#skills" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -116,12 +147,11 @@ export const socialLinks: SocialLink[] = [
 ];
 
 export const heroData: HeroData = {
-  greeting: "Hi, my name is",
   name: "Nilabhra Adhikari",
-  tagline: "I build things for the web.",
-  description:
-    "Full-stack developer with 3+ years of experience in React, Next.js, and Node.js.",
-  resumeUrl: "/resume.pdf",
+  tagline: "Full-stack\nengineer.",
+  description: "I ship the queue, the worker, and the UI on top of them.",
+  hash: "7f3a2c1",
+  ref: "available-for-work",
   status: {
     available: true,
     label: "Available for work",
@@ -218,53 +248,38 @@ export const projects: Project[] = [
 export const skills: Skill[] = [
   {
     category: "Languages",
-    items: ["TypeScript", "JavaScript", "Python", "Go", "SQL", "HTML", "CSS"],
+    items: ["TypeScript", "JavaScript", "HTML", "CSS"],
   },
   {
     category: "Frontend",
-    items: [
-      "React",
-      "Next.js",
-      "Vue.js",
-      "Tailwind CSS",
-      "Framer Motion",
-      "Redux",
-      "Zustand",
-    ],
+    items: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "Zustand"],
   },
   {
     category: "Backend",
-    items: [
-      "Node.js",
-      "Express",
-      "NestJS",
-      "GraphQL",
-      "REST APIs",
-      "Prisma",
-      "Drizzle",
-    ],
+    items: ["Node.js", "Express", "REST APIs", "Prisma", "Drizzle"],
   },
   {
     category: "Databases",
-    items: ["PostgreSQL", "MongoDB", "Redis", "MySQL", "Firebase"],
+    items: ["PostgreSQL", "MongoDB", "Redis"],
   },
   {
     category: "DevOps & Tools",
     items: [
       "Docker",
-      "AWS",
+      "Digital Ocean",
       "Vercel",
       "GitHub Actions",
       "CI/CD",
-      "Nginx",
-      "Linux",
+      "Git",
+      "GitHub",
+      "Cursor",
     ],
   },
 ];
 
 export const contactData: ContactData = {
-  heading: "Get In Touch",
+  heading: "Contact",
   description:
-    "I'm currently open to new opportunities and always happy to chat. Whether you have a question, a project idea, or just want to say hello — my inbox is always open.",
+    "Open to new roles. Questions, project ideas, and hellos all land in the same inbox.",
   email: "nilabhra09b.net@gmail.com",
 };

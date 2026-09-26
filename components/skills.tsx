@@ -1,16 +1,17 @@
 "use client";
 
+import { Tag } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { skills } from "@/data/portfolio";
+import { Badge } from "@/components/ui/badge";
 import SectionHeader from "@/components/section-header";
-import TechIcon from "@/components/tech-icon";
-import { listStagger, listItem, chipVariant } from "@/lib/motion";
+import { chipVariant, listItem, listStagger } from "@/lib/motion";
 
 export default function Skills() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="skills" className="w-full">
+    <section id="skills" className="w-full scroll-mt-24">
       <SectionHeader id="skills" />
 
       <motion.div
@@ -24,31 +25,24 @@ export default function Skills() {
           <motion.div
             key={group.category}
             variants={listItem}
-            className={`flex flex-col sm:flex-row gap-3 sm:gap-8 py-4 ${
+            className={`grid gap-3 py-4 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-8 ${
               idx !== 0 ? "border-t border-border" : ""
             }`}
           >
-            {/* Category label */}
-            <div className="sm:w-1/4 shrink-0 pt-0.5">
-              <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                {group.category}
-              </span>
-            </div>
-
-            {/* Chip grid */}
-            <motion.div
-              variants={listStagger}
-              className="sm:w-3/4 flex flex-wrap gap-2"
-            >
+            <h3 className="pt-1 font-mono text-[11px] tracking-widest text-muted-foreground uppercase">
+              {group.category}
+            </h3>
+            <motion.div variants={listStagger} className="flex flex-wrap gap-2">
               {group.items.map((item) => (
-                <motion.span
-                  key={item}
-                  variants={chipVariant}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-border bg-muted/50 text-xs font-mono text-muted-foreground cursor-default"
-                >
-                  <TechIcon name={item} size={12} />
-                  {item}
-                </motion.span>
+                <motion.div key={item} variants={chipVariant}>
+                  <Badge
+                    variant="outline"
+                    className="h-6 rounded-md border-border bg-card px-2 font-mono text-[11px] font-normal text-foreground"
+                  >
+                    <Tag className="text-muted-foreground" />
+                    {item.toLowerCase()}
+                  </Badge>
+                </motion.div>
               ))}
             </motion.div>
           </motion.div>

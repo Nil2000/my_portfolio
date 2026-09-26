@@ -13,14 +13,18 @@ export default function Footer() {
       whileInView="visible"
       viewport={{ once: true }}
       variants={listItem}
-      className="w-full max-w-4xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-border"
+      className="mx-auto w-full max-w-4xl px-4 sm:px-6"
     >
-      <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-        &copy; {new Date().getFullYear()} {siteConfig.name.split(" ")[0]}
-      </p>
-      <p className="text-xs font-mono text-muted-foreground">
-        built with next.js &amp; tailwind
-      </p>
+      <div className="border-t border-border">
+        <div className="flex flex-col gap-2 py-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-mono text-xs text-muted-foreground">
+            &copy; {new Date().getFullYear()} {siteConfig.name.split(" ")[0].toLowerCase()}
+          </p>
+          <p className="font-mono text-xs text-muted-foreground">
+            HEAD -&gt; main
+          </p>
+        </div>
+      </div>
     </motion.footer>
   );
 }

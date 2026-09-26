@@ -3,11 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { heroData, siteConfig, socialLinks } from "@/data/portfolio";
+import { contactData, heroData, siteConfig, socialLinks } from "@/data/portfolio";
 import SocialIcon from "./social-icon";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { TextAnimate } from "@/components/ui/text-animate";
+import { Button } from "@/components/ui/button";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import {
   Tooltip,
@@ -15,173 +14,130 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const fadeUp = (delay: number) =>
-  ({
-    initial: { opacity: 0, y: 12 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5, delay, ease: "easeOut" as const },
-  }) as const;
+const linkFocus =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
 
-// Greeting types first; name starts right after so the row reads as one continuous line.
-const GREETING_TYPE_START = 200;
-const GREETING_TYPE_SPEED = 35;
-const GREETING_TYPE_DELAY =
-  GREETING_TYPE_START + heroData.greeting.length * GREETING_TYPE_SPEED + 150;
+const commitLine = `commit ${heroData.hash}\n(HEAD -> main)`;
+
+const iconLinks = socialLinks.filter(
+  (link) => link.icon !== "Github" && link.icon !== "Mail",
+);
+const github = socialLinks.find((link) => link.icon === "Github");
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="hero" className="flex flex-col gap-10 pt-4 pb-2">
-      {/* Top row: annotation block + avatar */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-8">
-        <div className="flex flex-col gap-3">
-          {/* Mono annotation row: greeting · name */}
-          <motion.div
-            {...fadeUp(0.05)}
-            className="flex items-center gap-2 flex-wrap"
+    <section id="hero" className="flex scroll-mt-24 flex-col gap-8 pt-1">
+      <div className="flex flex-col gap-1">
+        {reduceMotion ? (
+          <p className="font-mono text-xs leading-relaxed whitespace-pre-wrap text-muted-foreground">
+            {commitLine}
+          </p>
+        ) : (
+          <TypingAnimation
+            as="p"
+            startOnView={false}
+            delay={180}
+            duration={16}
+            showCursor
+            cursorStyle="block"
+            className="font-mono text-xs leading-relaxed tracking-normal whitespace-pre-wrap text-muted-foreground"
           >
-            {reduceMotion ? (
-              <>
-                <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                  {heroData.greeting}
-                </span>
-                <span className="text-xs font-mono text-muted-foreground/40">
-                  ·
-                </span>
-                <span className="text-sm font-mono font-semibold text-foreground">
-                  {heroData.name}
-                </span>
-              </>
-            ) : (
-              <>
-                <TypingAnimation
-                  as="span"
-                  delay={GREETING_TYPE_START}
-                  duration={GREETING_TYPE_SPEED}
-                  showCursor
-                  cursorStyle="underscore"
-                  className="text-xs font-mono text-muted-foreground uppercase tracking-widest"
-                >
-                  {heroData.greeting}
-                </TypingAnimation>
-                <span className="text-xs font-mono text-muted-foreground/40">
-                  ·
-                </span>
-                <TypingAnimation
-                  as="span"
-                  delay={GREETING_TYPE_DELAY}
-                  duration={45}
-                  showCursor
-                  cursorStyle="underscore"
-                  className="text-sm font-mono font-semibold text-foreground"
-                >
-                  {heroData.name}
-                </TypingAnimation>
-              </>
-            )}
-          </motion.div>
-
-          {/* Status badge */}
-          {heroData.status.available && (
-            <motion.div {...fadeUp(0.12)}>
-              <Badge variant="success" className="gap-1.5 w-fit">
-                <span className="relative flex h-2 w-2">
-                  {!reduceMotion && (
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-brand opacity-60" />
-                  )}
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-brand" />
-                </span>
-                {heroData.status.label}
-              </Badge>
-            </motion.div>
-          )}
-
-          {/* Display headline — the thesis */}
-          {reduceMotion ? (
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mt-1">
-              {heroData.tagline}
-            </h1>
-          ) : (
-            <TextAnimate
-              as="h1"
-              by="word"
-              animation="blurInUp"
-              startOnView={false}
-              once
-              delay={0.2}
-              duration={0.6}
-              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mt-1"
-            >
-              {heroData.tagline}
-            </TextAnimate>
-          )}
-
-          {/* Description */}
-          <motion.p
-            {...fadeUp(0.32)}
-            className="text-base text-muted-foreground max-w-md leading-relaxed font-body"
-          >
-            {heroData.description}
-          </motion.p>
-        </div>
-
-        {/* Avatar */}
-        <motion.div
-          {...fadeUp(0.1)}
-          className="relative h-28 w-28 shrink-0 overflow-hidden rounded-md border border-border bg-muted self-start sm:self-auto"
-        >
-          <Image
-            src={siteConfig.profileImage}
-            alt={`${heroData.name} profile picture`}
-            fill
-            priority
-            sizes="112px"
-            className="object-cover"
-          />
-        </motion.div>
+            {commitLine}
+          </TypingAnimation>
+        )}
+        <p className="font-mono text-xs leading-relaxed text-muted-foreground">
+          Author: {heroData.name} &lt;{contactData.email}&gt;
+        </p>
+        {heroData.status.available && (
+          <Badge variant="success" className="mt-2 w-fit gap-1.5">
+            <span className="relative flex size-2">
+              {!reduceMotion && (
+                <motion.span
+                  className="absolute inline-flex size-full rounded-full bg-status"
+                  animate={{ scale: [1, 2.2], opacity: [0.55, 0] }}
+                  transition={{ duration: 1.4, repeat: Infinity, ease: "easeOut" }}
+                />
+              )}
+              <span className="relative inline-flex size-2 rounded-full bg-status" />
+            </span>
+            {heroData.status.label}
+          </Badge>
+        )}
       </div>
 
-      {/* Actions + socials */}
       <motion.div
-        {...fadeUp(0.42)}
-        className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
+        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: reduceMotion ? 0 : 0.12 }}
+        className="flex flex-col gap-6"
       >
-        <div className="flex items-center gap-2">
-          <Button
-            asChild
-            className="rounded-md bg-accent-brand text-background font-mono text-xs h-8 px-4 hover:bg-accent-brand/85"
-          >
-            <Link href="#contact">get in touch</Link>
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            className="rounded-md font-mono text-xs h-8 px-4 hover:bg-muted border-border"
-          >
-            <Link href={heroData.resumeUrl}>resume</Link>
-          </Button>
+        <div className="flex max-w-xl items-start justify-between gap-4">
+          <h1 className="display-stretch font-display text-[2.65rem] font-extrabold leading-[0.9] tracking-tight text-foreground sm:text-6xl">
+            {heroData.tagline.split("\n").map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </h1>
+          <div className="relative size-16 shrink-0 overflow-hidden rounded-md border border-border bg-muted sm:size-28">
+            <Image
+              src={siteConfig.profileImage}
+              alt={`${heroData.name} profile picture`}
+              fill
+              priority
+              sizes="112px"
+              className="object-cover"
+            />
+          </div>
         </div>
 
-        <div className="flex items-center gap-1 sm:ml-auto">
-          {socialLinks.map((link) => (
-            <Tooltip key={link.platform}>
-              <TooltipTrigger asChild>
-                <Link
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.platform}
-                  className="p-2 text-muted-foreground transition-colors hover:text-accent-brand focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-                >
-                  <SocialIcon name={link.icon} size={18} />
+        <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+          {heroData.description}
+        </p>
+
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              className="h-8 px-3 font-mono text-xs"
+            >
+              <a href={`mailto:${contactData.email}`}>Email me</a>
+            </Button>
+            {github && (
+              <Button
+                asChild
+                variant="outline"
+                className="h-8 px-3 font-mono text-xs"
+              >
+                <Link href={github.url} target="_blank" rel="noopener noreferrer">
+                  GitHub
                 </Link>
-              </TooltipTrigger>
-              <TooltipContent side="top" sideOffset={4}>
-                {link.platform}
-              </TooltipContent>
-            </Tooltip>
-          ))}
+              </Button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-1">
+            {iconLinks.map((link) => (
+              <Tooltip key={link.platform}>
+                <TooltipTrigger asChild>
+                  <Link
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.platform}
+                    className={`p-2 text-muted-foreground transition-colors hover:text-foreground ${linkFocus}`}
+                  >
+                    <SocialIcon name={link.icon} size={18} />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="top" sideOffset={4}>
+                  {link.platform}
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
         </div>
       </motion.div>
     </section>

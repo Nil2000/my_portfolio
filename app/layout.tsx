@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Archivo, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import { siteConfig } from "@/data/portfolio";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -8,22 +8,22 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-const bricolage = Bricolage_Grotesque({
+const archivo = Archivo({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
+  axes: ["wdth"],
 });
 
-const ibmPlexSans = IBM_Plex_Sans({
+const instrumentSans = Instrument_Sans({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
+const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -55,15 +55,15 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(
         "h-full antialiased",
-        bricolage.variable,
-        ibmPlexSans.variable,
-        ibmPlexMono.variable,
+        archivo.variable,
+        instrumentSans.variable,
+        jetbrainsMono.variable,
       )}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-body">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >

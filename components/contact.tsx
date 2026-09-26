@@ -1,59 +1,61 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { contactData } from "@/data/portfolio";
 import SectionHeader from "@/components/section-header";
-import { TextAnimate } from "@/components/ui/text-animate";
+import { Button } from "@/components/ui/button";
 
 export default function Contact() {
   const reduceMotion = useReducedMotion();
+  const [copied, setCopied] = useState(false);
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(contactData.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }
 
   return (
-    <section id="contact" className="w-full pb-4">
+    <section id="contact" className="w-full scroll-mt-24 pb-4">
       <SectionHeader id="contact" />
 
       <motion.div
-        initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.45 }}
-        className="flex flex-col gap-8"
+        transition={{ duration: 0.4 }}
+        className="flex flex-col gap-6"
       >
-        <p className="text-sm text-muted-foreground leading-relaxed max-w-lg font-body">
+        <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
           {contactData.description}
         </p>
 
-        {/* Large typographic email CTA */}
-        <div className="flex flex-col gap-3">
-          <Link
-            href={`mailto:${contactData.email}`}
-            className="group inline-flex items-baseline gap-3 w-fit focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground rounded-sm"
-          >
-            {reduceMotion ? (
-              <span className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground border-b border-transparent group-hover:border-accent-brand group-hover:text-accent-brand transition-colors leading-tight">
-                {contactData.email}
-              </span>
-            ) : (
-              <TextAnimate
-                as="span"
-                by="character"
-                animation="slideUp"
-                once
-                delay={0.1}
-                duration={0.5}
-                className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground border-b border-transparent group-hover:border-accent-brand group-hover:text-accent-brand transition-colors leading-tight"
-              >
-                {contactData.email}
-              </TextAnimate>
-            )}
-            <span className="text-xs font-mono text-muted-foreground group-hover:text-accent-brand transition-colors uppercase tracking-widest hidden sm:inline">
-              ↗
-            </span>
-          </Link>
-          <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest">
-            say hello
+        <div className="flex flex-col items-start gap-3">
+          <p className="font-mono text-xs text-muted-foreground">
+            $ git push --to
           </p>
+          <a
+            href={`mailto:${contactData.email}`}
+            className="rounded-sm font-mono text-base font-medium tracking-tight text-foreground underline decoration-border decoration-1 underline-offset-[6px] transition-colors hover:decoration-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:text-xl"
+          >
+            {contactData.email}
+          </a>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-8 px-3 font-mono text-xs"
+            onClick={copyEmail}
+          >
+            {copied ? "Copied" : "Copy email"}
+          </Button>
+          <span className="sr-only" aria-live="polite">
+            {copied ? "Copied" : ""}
+          </span>
         </div>
       </motion.div>
     </section>
