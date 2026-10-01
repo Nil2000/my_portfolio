@@ -1,62 +1,37 @@
 "use client";
 
-import BulbSvg from "@/components/ui/bulb-svg";
-import MoonIcon from "@/components/ui/moon-icon";
+import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import BrightnessDownIcon from "@/components/ui/brightness-down-icon";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { buttonVariants } from "@/components/ui/button";
+
+const mounted = () => true;
+const unmounted = () => false;
+const subscribe = () => () => {};
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const isMounted = useSyncExternalStore(subscribe, mounted, unmounted);
+  const isDark = resolvedTheme === "dark";
+  const label = isDark ? "Switch to light mode" : "Switch to dark mode";
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
+  if (!isMounted) {
     return (
-      <Button
-        variant="outline"
-        size="icon"
-        className="size-9 shrink-0"
+      <button
+        type="button"
+        className={buttonVariants({ variant: "outline", size: "icon-lg" })}
         aria-label="Toggle theme"
         disabled
-      >
-        <BulbSvg size={16} className="opacity-0" />
-      </Button>
+      />
     );
   }
 
-  const label =
-    resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode";
-
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="size-9 shrink-0"
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-          aria-label={label}
-        >
-          {resolvedTheme === "dark" ? (
-            <BrightnessDownIcon size={16} />
-          ) : (
-            <MoonIcon size={16} />
-          )}
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent side="bottom" sideOffset={4}>
-        {label}
-      </TooltipContent>
-    </Tooltip>
+    <AnimatedThemeToggler
+      theme={isDark ? "dark" : "light"}
+      onThemeChange={setTheme}
+      aria-label={label}
+      className={buttonVariants({ variant: "outline", size: "icon-lg" })}
+    />
   );
 }

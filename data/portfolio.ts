@@ -143,7 +143,6 @@ export const socialLinks: SocialLink[] = [
     url: "https://x.com/I_AM_Nilabhra",
     icon: "X",
   },
-  { platform: "Email", url: "mailto:nilabhra09b.net@gmail.com", icon: "Mail" },
 ];
 
 export const heroData: HeroData = {

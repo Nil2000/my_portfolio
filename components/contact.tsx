@@ -39,20 +39,19 @@ export default function Contact() {
           <p className="font-mono text-xs text-muted-foreground">
             $ git push --to
           </p>
-          <a
-            href={`mailto:${contactData.email}`}
-            className="rounded-sm font-mono text-base font-medium tracking-tight text-foreground underline decoration-border decoration-1 underline-offset-[6px] transition-colors hover:decoration-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:text-xl"
-          >
-            {contactData.email}
-          </a>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-8 px-3 font-mono text-xs"
-            onClick={copyEmail}
-          >
-            {copied ? "Copied" : "Copy email"}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button asChild className="h-8 px-3 font-mono text-xs">
+              <a href={`mailto:${contactData.email}`}>Email me</a>
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-8 px-3 font-mono text-xs"
+              onClick={copyEmail}
+            >
+              {copied ? "Copied" : "Copy email"}
+            </Button>
+          </div>
           <span className="sr-only" aria-live="polite">
             {copied ? "Copied" : ""}
           </span>
