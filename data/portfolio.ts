@@ -248,11 +248,18 @@ export const projects: Project[] = [
 export const skills: Skill[] = [
   {
     category: "Languages",
-    items: ["TypeScript", "JavaScript", "HTML", "CSS"],
+    items: ["TypeScript", "JavaScript", "HTML", "CSS", "C++", "Go"],
   },
   {
     category: "Frontend",
-    items: ["React", "Next.js", "Tailwind CSS", "Framer Motion", "Zustand"],
+    items: [
+      "React",
+      "Next.js",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "Framer Motion",
+      "Zustand",
+    ],
   },
   {
     category: "Backend",
@@ -266,8 +273,10 @@ export const skills: Skill[] = [
     category: "DevOps & Tools",
     items: [
       "Docker",
+      "Turborepo",
       "Digital Ocean",
       "Vercel",
+      "Cloudflare R2",
       "GitHub Actions",
       "CI/CD",
       "Git",

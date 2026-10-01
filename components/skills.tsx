@@ -1,8 +1,8 @@
 "use client";
 
-import { Tag } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { skills } from "@/data/portfolio";
+import SkillIcon from "@/components/skill-icon";
 import { Badge } from "@/components/ui/badge";
 import SectionHeader from "@/components/section-header";
 import { chipVariant, listItem, listStagger } from "@/lib/motion";
@@ -39,7 +39,7 @@ export default function Skills() {
                     variant="outline"
                     className="h-6 rounded-md border-border bg-card px-2 font-mono text-[11px] font-normal text-foreground"
                   >
-                    <Tag className="text-muted-foreground" />
+                    <SkillIcon name={item} />
                     {item.toLowerCase()}
                   </Badge>
                 </motion.div>

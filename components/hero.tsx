@@ -3,7 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { contactData, heroData, siteConfig, socialLinks } from "@/data/portfolio";
+import {
+  contactData,
+  heroData,
+  siteConfig,
+  socialLinks,
+} from "@/data/portfolio";
 import SocialIcon from "./social-icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -56,8 +61,12 @@ export default function Hero() {
               {!reduceMotion && (
                 <motion.span
                   className="absolute inline-flex size-full rounded-full bg-status"
-                  animate={{ scale: [1, 2.2], opacity: [0.55, 0] }}
-                  transition={{ duration: 1.4, repeat: Infinity, ease: "easeOut" }}
+                  animate={{ scale: [1, 2.2, 2.2], opacity: [0.55, 0, 0] }}
+                  transition={{
+                    duration: 1.4,
+                    repeat: Infinity,
+                    ease: "easeOut",
+                  }}
                 />
               )}
               <span className="relative inline-flex size-2 rounded-full bg-status" />
@@ -99,10 +108,7 @@ export default function Hero() {
 
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2">
-            <Button
-              asChild
-              className="h-8 px-3 font-mono text-xs"
-            >
+            <Button asChild className="h-8 px-3 font-mono text-xs">
               <a href={`mailto:${contactData.email}`}>Email me</a>
             </Button>
             {github && (
@@ -111,7 +117,11 @@ export default function Hero() {
                 variant="outline"
                 className="h-8 px-3 font-mono text-xs"
               >
-                <Link href={github.url} target="_blank" rel="noopener noreferrer">
+                <Link
+                  href={github.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   GitHub
                 </Link>
               </Button>
