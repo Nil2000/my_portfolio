@@ -191,7 +191,7 @@ export const experiences: Experience[] = [
 export const projects: Project[] = [
   {
     id: "proj-1",
-    title: "Testimonial 100x",
+    title: "Testiflow",
     description:
       "A testimonials collection and showcase platform. Create spaces, collect text and video testimonials via public links, manage them in an admin dashboard, and publish an embeddable Wall of Love — with async spam, sentiment, and transcription analysis via a Redis-backed worker.",
     technologies: [
@@ -204,6 +204,7 @@ export const projects: Project[] = [
       "NextAuth",
     ],
     repoUrl: "https://github.com/Nil2000/100x-testimonial",
+    liveUrl: "https://testiflow.nilabhra.info",
     featured: true,
   },
   {
