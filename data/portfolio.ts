@@ -206,6 +206,7 @@ export const projects: Project[] = [
     repoUrl: "https://github.com/Nil2000/100x-testimonial",
     liveUrl: "https://testiflow.nilabhra.info",
     featured: true,
+    image: "/testiflow.png",
   },
   {
     id: "proj-2",
