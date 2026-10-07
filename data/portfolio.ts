@@ -18,7 +18,7 @@ export interface HeroStatus {
 
 export interface HeroData {
   name: string;
-  tagline: string;
+  role: string;
   description: string;
   hash: string;
   ref: string;
@@ -147,7 +147,7 @@ export const socialLinks: SocialLink[] = [
 
 export const heroData: HeroData = {
   name: "Nilabhra Adhikari",
-  tagline: "Full-stack\nengineer.",
+  role: "Full-stack engineer",
   description: "I ship the queue, the worker, and the UI on top of them.",
   hash: "7f3a2c1",
   ref: "available-for-work",

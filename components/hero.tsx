@@ -23,7 +23,7 @@ const linkFocus =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
 
 const commitLine = `commit ${heroData.hash} (HEAD -> main)`;
-const taglineLines = heroData.tagline.split("\n");
+const nameLines = heroData.name.split(" ");
 
 const iconLinks = socialLinks.filter((link) => link.icon !== "Github");
 const github = socialLinks.find((link) => link.icon === "Github");
@@ -80,7 +80,7 @@ export default function Hero() {
       <div className="mt-10 flex flex-col gap-8 sm:mt-12 sm:gap-10">
         <div className="flex items-end justify-between gap-4">
           <h1 className="display-stretch font-display text-[clamp(2.25rem,9vw,6rem)] font-extrabold leading-[0.88] tracking-tight text-foreground">
-            {taglineLines.map((line, index) => (
+            {nameLines.map((line, index) => (
               <motion.span
                 key={line}
                 className="block"
@@ -92,7 +92,7 @@ export default function Hero() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
-                {line}
+                {index === nameLines.length - 1 ? `${line}.` : line}
               </motion.span>
             ))}
           </h1>
@@ -115,6 +115,21 @@ export default function Hero() {
             />
           </motion.div>
         </div>
+
+        <motion.p
+          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.4,
+            delay: reduceMotion ? 0 : 0.32,
+          }}
+          className="font-display text-xl font-semibold tracking-tight text-foreground sm:text-3xl"
+        >
+          <span className="font-mono font-normal text-muted-foreground">
+            feat:{" "}
+          </span>
+          {heroData.role}
+        </motion.p>
 
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 8 }}

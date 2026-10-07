@@ -79,7 +79,7 @@ export default async function Image() {
 
           {/* Tagline */}
           <div style={{ fontSize: 26, color: MUTED, lineHeight: 1.35 }}>
-            {heroData.tagline.replace("\n", " ")}
+            {heroData.role}
           </div>
 
           {/* URL pill */}
