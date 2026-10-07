@@ -9,29 +9,30 @@ import { sections, siteConfig } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/theme-toggle";
 import { useActiveSection } from "@/hooks/use-active-section";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { enter } from "@/lib/motion";
+import { linkFocus } from "@/lib/utils";
 
 const navSections = sections.filter((section) => section.showInNav);
 const repoName = `${siteConfig.name.split(" ")[0].toLowerCase()}/portfolio`;
 
-const linkFocus =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
+const activeCue =
+  "aria-[current=true]:underline aria-[current=true]:decoration-status-ink aria-[current=true]:underline-offset-4";
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const reduceMotion = useReducedMotion();
   const activeId = useActiveSection();
   const active = navSections.find((section) => section.id === activeId);
+  const headerEnter = enter(reduceMotion);
+  const iconSwap = reduceMotion
+    ? { duration: 0.15, ease: "easeOut" as const }
+    : { type: "spring" as const, duration: 0.3, bounce: 0 };
 
   return (
     <motion.header
-      initial={reduceMotion ? false : { y: -16, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      initial={headerEnter.hidden}
+      animate={headerEnter.shown}
+      transition={headerEnter.transition}
       className="fixed top-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur-md"
     >
       <nav className="mx-auto flex w-full max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
@@ -66,7 +67,7 @@ export default function Header() {
                   <Link
                     href={`#${section.id}`}
                     aria-current={isActive ? "true" : undefined}
-                    className={`font-mono text-xs lowercase transition-colors hover:text-foreground ${linkFocus} ${
+                    className={`font-mono text-xs lowercase transition-colors hover:text-foreground ${linkFocus} ${activeCue} ${
                       isActive ? "text-foreground" : "text-muted-foreground"
                     }`}
                   >
@@ -79,33 +80,60 @@ export default function Header() {
 
           <ThemeToggle />
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7 text-muted-foreground hover:text-foreground md:hidden"
-                onClick={() => setMobileOpen(!mobileOpen)}
-                aria-label={mobileOpen ? "Close menu" : "Open menu"}
-                aria-expanded={mobileOpen}
-              >
-                {mobileOpen ? <XIcon size={16} /> : <UnorderedListIcon size={16} />}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" sideOffset={4}>
-              {mobileOpen ? "Close menu" : "Open menu"}
-            </TooltipContent>
-          </Tooltip>
+          <Button
+            variant="outline"
+            size="icon-lg"
+            className="text-muted-foreground hover:text-foreground md:hidden"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+          >
+            <span className="relative size-4">
+              <AnimatePresence initial={false}>
+                <motion.span
+                  key={mobileOpen ? "close" : "menu"}
+                  className="absolute inset-0 inline-flex items-center justify-center"
+                  initial={
+                    reduceMotion
+                      ? { opacity: 0 }
+                      : { opacity: 0, scale: 0.25, filter: "blur(4px)" }
+                  }
+                  animate={
+                    reduceMotion
+                      ? { opacity: 1 }
+                      : { opacity: 1, scale: 1, filter: "blur(0px)" }
+                  }
+                  exit={
+                    reduceMotion
+                      ? { opacity: 0 }
+                      : { opacity: 0, scale: 0.25, filter: "blur(4px)" }
+                  }
+                  transition={iconSwap}
+                >
+                  {mobileOpen ? (
+                    <XIcon size={16} />
+                  ) : (
+                    <UnorderedListIcon size={16} />
+                  )}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+          </Button>
         </div>
       </nav>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {mobileOpen && (
           <motion.div
-            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            initial={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            animate={
+              reduceMotion ? { opacity: 1 } : { height: "auto", opacity: 1 }
+            }
+            exit={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={{
+              duration: reduceMotion ? 0.15 : 0.2,
+              ease: "easeOut",
+            }}
             className="overflow-hidden border-t border-border bg-background md:hidden"
           >
             <p className="px-4 pt-3 font-mono text-xs text-muted-foreground">
@@ -124,7 +152,7 @@ export default function Header() {
                     href={`#${section.id}`}
                     onClick={() => setMobileOpen(false)}
                     aria-current={section.id === activeId ? "true" : undefined}
-                    className={`flex items-center gap-3 py-2 text-sm lowercase transition-colors hover:text-foreground ${linkFocus} ${
+                    className={`flex items-center gap-3 py-2 text-sm lowercase transition-colors hover:text-foreground ${linkFocus} ${activeCue} ${
                       section.id === activeId
                         ? "text-status-ink"
                         : "text-muted-foreground"

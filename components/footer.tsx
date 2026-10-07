@@ -1,18 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { siteConfig } from "@/data/portfolio";
-import { listItem } from "@/lib/motion";
+import { listItem, listItemReduced } from "@/lib/motion";
+import { linkFocus } from "@/lib/utils";
 
 export default function Footer() {
   const reduceMotion = useReducedMotion();
 
   return (
     <motion.footer
-      initial={reduceMotion ? "visible" : "hidden"}
+      initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      variants={listItem}
+      variants={reduceMotion ? listItemReduced : listItem}
       className="mx-auto w-full max-w-4xl px-4 sm:px-6"
     >
       <div className="border-t border-border">
@@ -20,9 +22,17 @@ export default function Footer() {
           <p className="font-mono text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} {siteConfig.name.split(" ")[0].toLowerCase()}
           </p>
-          <p className="font-mono text-xs text-muted-foreground">
-            HEAD -&gt; main
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="font-mono text-xs text-muted-foreground">
+              HEAD -&gt; main
+            </p>
+            <Link
+              href="#hero"
+              className={`font-mono text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline ${linkFocus}`}
+            >
+              Back to top
+            </Link>
+          </div>
         </div>
       </div>
     </motion.footer>

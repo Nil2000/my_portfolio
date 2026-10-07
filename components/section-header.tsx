@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { sections } from "@/data/portfolio";
+import { enter } from "@/lib/motion";
 
 interface SectionHeaderProps {
   id: string;
@@ -10,14 +11,15 @@ interface SectionHeaderProps {
 export default function SectionHeader({ id }: SectionHeaderProps) {
   const section = sections.find((item) => item.id === id);
   const reduceMotion = useReducedMotion();
+  const headerEnter = enter(reduceMotion);
   if (!section) return null;
 
   return (
     <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={headerEnter.hidden}
+      whileInView={headerEnter.shown}
       viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
+      transition={headerEnter.transition}
       className="mb-8 flex items-baseline gap-3"
     >
       <span

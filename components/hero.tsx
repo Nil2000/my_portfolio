@@ -10,6 +10,8 @@ import {
   socialLinks,
 } from "@/data/portfolio";
 import SocialIcon from "./social-icon";
+import { enter } from "@/lib/motion";
+import { linkFocus } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TypingAnimation } from "@/components/ui/typing-animation";
@@ -19,9 +21,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const linkFocus =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
-
 const commitLine = `commit ${heroData.hash} (HEAD -> main)`;
 const nameLines = heroData.name.split(" ");
 
@@ -30,6 +29,9 @@ const github = socialLinks.find((link) => link.icon === "Github");
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
+  const photoEnter = enter(reduceMotion, 0.1);
+  const roleEnter = enter(reduceMotion, 0.2);
+  const actionsEnter = enter(reduceMotion, 0.3);
 
   return (
     <section id="hero" className="flex scroll-mt-24 flex-col pt-1">
@@ -78,51 +80,44 @@ export default function Hero() {
       </div>
 
       <div className="mt-10 flex flex-col gap-8 sm:mt-12 sm:gap-10">
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <h1 className="display-stretch font-display text-[clamp(2.25rem,9vw,6rem)] font-extrabold leading-[0.88] tracking-tight text-foreground">
-            {nameLines.map((line, index) => (
-              <motion.span
-                key={line}
-                className="block"
-                initial={reduceMotion ? false : { opacity: 0, y: "0.28em" }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: reduceMotion ? 0 : 0.45,
-                  delay: reduceMotion ? 0 : 0.12 + index * 0.09,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-              >
-                {index === nameLines.length - 1 ? `${line}.` : line}
-              </motion.span>
-            ))}
+            {nameLines.map((line, index) => {
+              const nameEnter = enter(reduceMotion, index * 0.1);
+              return (
+                <motion.span
+                  key={line}
+                  className="block"
+                  initial={nameEnter.hidden}
+                  animate={nameEnter.shown}
+                  transition={nameEnter.transition}
+                >
+                  {index === nameLines.length - 1 ? `${line}.` : line}
+                </motion.span>
+              );
+            })}
           </h1>
           <motion.div
-            initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: reduceMotion ? 0 : 0.45,
-              delay: reduceMotion ? 0 : 0.1,
-            }}
-            className="relative size-16 shrink-0 overflow-hidden rounded-md border border-border bg-muted sm:size-24 md:size-32 lg:size-36"
+            initial={photoEnter.hidden}
+            animate={photoEnter.shown}
+            transition={photoEnter.transition}
+            className="relative aspect-square w-[clamp(3.25rem,12vw,7.5rem)] shrink-0 overflow-hidden rounded-md border border-border bg-muted"
           >
             <Image
               src={siteConfig.profileImage}
               alt={`${heroData.name} profile picture`}
               fill
               priority
-              sizes="(min-width: 1024px) 144px, (min-width: 768px) 128px, 96px"
-              className="object-cover"
+              sizes="(min-width: 1024px) 120px, 12vw"
+              className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
             />
           </motion.div>
         </div>
 
         <motion.p
-          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.4,
-            delay: reduceMotion ? 0 : 0.32,
-          }}
+          initial={roleEnter.hidden}
+          animate={roleEnter.shown}
+          transition={roleEnter.transition}
           className="font-display text-xl font-semibold tracking-tight text-foreground sm:text-3xl"
         >
           <span className="font-mono font-normal text-muted-foreground">
@@ -132,12 +127,9 @@ export default function Hero() {
         </motion.p>
 
         <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.4,
-            delay: reduceMotion ? 0 : 0.4,
-          }}
+          initial={actionsEnter.hidden}
+          animate={actionsEnter.shown}
+          transition={actionsEnter.transition}
           className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
         >
           <p className="max-w-sm text-base leading-relaxed text-muted-foreground">

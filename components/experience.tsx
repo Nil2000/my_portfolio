@@ -5,13 +5,12 @@ import { motion, useReducedMotion } from "motion/react";
 import { experiences } from "@/data/portfolio";
 import { Badge } from "@/components/ui/badge";
 import SectionHeader from "@/components/section-header";
-import { listStagger, listItem } from "@/lib/motion";
-
-const linkFocus =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
+import { listItem, listItemReduced, listStagger } from "@/lib/motion";
+import { linkFocus } from "@/lib/utils";
 
 export default function Experience() {
   const reduceMotion = useReducedMotion();
+  const item = reduceMotion ? listItemReduced : listItem;
 
   return (
     <section id="experience" className="w-full scroll-mt-24">
@@ -19,7 +18,7 @@ export default function Experience() {
 
       <motion.div
         variants={listStagger}
-        initial={reduceMotion ? "visible" : "hidden"}
+        initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
         className="flex flex-col"
@@ -27,7 +26,7 @@ export default function Experience() {
         {experiences.map((exp, idx) => (
           <motion.article
             key={exp.id}
-            variants={listItem}
+            variants={item}
             className={`flex flex-col gap-2 py-6 sm:grid sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-8 ${
               idx !== 0 ? "border-t border-border" : ""
             }`}

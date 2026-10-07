@@ -3,7 +3,7 @@
 import Link from "next/link";
 import GithubIcon from "@/components/ui/github-icon";
 import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import SectionHeader from "@/components/section-header";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import {
@@ -11,20 +11,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-interface ContributionDay {
-  date: string;
-  count: number;
-  level: number;
-}
-
-interface ContributionsData {
-  total: {
-    lastYear: number;
-    [year: string]: number;
-  };
-  contributions: ContributionDay[];
-}
+import type { ContributionDay, ContributionsData } from "@/lib/github";
+import { enter } from "@/lib/motion";
+import { linkFocus } from "@/lib/utils";
 
 const LEVEL_LABELS = [
   "No contributions",
@@ -33,6 +22,21 @@ const LEVEL_LABELS = [
   "7–9 contributions",
   "10+ contributions",
 ] as const;
+
+const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 function getContributionColor(level: number): string {
   const colors = [
@@ -58,71 +62,15 @@ function formatContributionLabel(day: ContributionDay): string {
   return `${day.count} contribution${day.count === 1 ? "" : "s"} on ${formatted}`;
 }
 
-const monthNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+function toLocalDate(dateString: string) {
+  const date = new Date(dateString);
+  return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+}
 
-export default function GithubContributions() {
-  const [data, setData] = useState<ContributionsData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          "https://github-contributions-api.jogruber.de/v4/nil2000?y=last",
-        );
-        if (response.ok) {
-          const result = await response.json();
-          setData(result);
-        }
-      } catch (error) {
-        console.error("Failed to fetch GitHub contributions:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
-
-  // Stable-height skeleton prevents layout shift while fetching
-  if (loading) {
-    return (
-      <section id="contributions" className="w-full scroll-mt-24">
-        <SectionHeader id="contributions" />
-        <div className="mb-5 -mt-4 h-4 w-48 rounded bg-muted animate-pulse" />
-        <div className="w-full pb-4">
-          <div className="h-[88px] w-full rounded-sm bg-muted/40 animate-pulse" />
-        </div>
-      </section>
-    );
-  }
-
-  if (!data || !data.contributions || data.contributions.length === 0) {
-    return null;
-  }
-
-  const contributions = data.contributions;
+function buildWeeks(contributions: ContributionDay[]) {
   const weeks: (ContributionDay | null)[][] = [];
   let currentWeek: (ContributionDay | null)[] = [];
-
-  const firstDate = new Date(contributions[0].date);
-  const localFirstDate = new Date(
-    firstDate.getTime() + firstDate.getTimezoneOffset() * 60000,
-  );
-  const firstDayOfWeek = localFirstDate.getDay();
+  const firstDayOfWeek = toLocalDate(contributions[0].date).getDay();
 
   for (let i = 0; i < firstDayOfWeek; i++) {
     currentWeek.push(null);
@@ -147,37 +95,77 @@ export default function GithubContributions() {
   let currentMonth = -1;
   weeks.forEach((week, weekIndex) => {
     const firstValidDay = week.find((day) => day !== null);
-    if (firstValidDay) {
-      const date = new Date(firstValidDay.date);
-      const localDate = new Date(
-        date.getTime() + date.getTimezoneOffset() * 60000,
-      );
-      const month = localDate.getMonth();
-      if (month !== currentMonth) {
-        currentMonth = month;
-        months.push({ label: monthNames[month], index: weekIndex });
-      }
+    if (!firstValidDay) return;
+    const month = toLocalDate(firstValidDay.date).getMonth();
+    if (month !== currentMonth) {
+      currentMonth = month;
+      months.push({ label: monthNames[month], index: weekIndex });
     }
   });
+
+  return { weeks, months };
+}
+
+export default function GithubContributions({
+  data,
+}: {
+  data: ContributionsData | null;
+}) {
+  const reduceMotion = useReducedMotion();
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const hasData = Boolean(data?.contributions?.length);
+  const countEnter = enter(reduceMotion);
+  const gridEnter = enter(reduceMotion, 0.1);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    // Layout can settle a frame later; scroll only when the row actually overflows.
+    const scrollToLatest = () => {
+      if (el.scrollWidth > el.clientWidth) el.scrollLeft = el.scrollWidth;
+    };
+    scrollToLatest();
+    const frame = requestAnimationFrame(scrollToLatest);
+    return () => cancelAnimationFrame(frame);
+  }, [hasData]);
+
+  if (!data || !hasData) {
+    return (
+      <section id="contributions" className="w-full scroll-mt-24">
+        <SectionHeader id="contributions" />
+        <Link
+          href="https://github.com/nil2000"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`inline-flex items-center gap-2 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground ${linkFocus}`}
+        >
+          <GithubIcon size={16} />
+          github.com/nil2000
+        </Link>
+      </section>
+    );
+  }
+
+  const { weeks, months } = buildWeeks(data.contributions);
 
   return (
     <section id="contributions" className="w-full scroll-mt-24">
       <SectionHeader id="contributions" />
 
       <motion.div
-        initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        initial={countEnter.hidden}
+        whileInView={countEnter.shown}
         viewport={{ once: true }}
-        transition={{ duration: 0.3 }}
+        transition={countEnter.transition}
         className="mb-5 -mt-4"
       >
-        <p className="text-xs font-mono text-muted-foreground tabular-nums">
+        <p className="font-mono text-xs text-muted-foreground tabular-nums">
           {reduceMotion ? (
             data.total.lastYear.toLocaleString()
           ) : (
             <NumberTicker
               value={data.total.lastYear}
-              className="text-xs font-mono text-muted-foreground tabular-nums"
+              className="font-mono text-xs text-muted-foreground tabular-nums"
             />
           )}{" "}
           contributions in the last year
@@ -185,45 +173,63 @@ export default function GithubContributions() {
       </motion.div>
 
       <motion.div
-        initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={gridEnter.hidden}
+        whileInView={gridEnter.shown}
         viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.1 }}
+        transition={gridEnter.transition}
         className="w-full pb-4"
       >
-        {/* aria-hidden: decorative heatmap; accessible summary is in the text above and the GitHub link below */}
-        <div className="flex w-full gap-[3px]" aria-hidden="true">
-          {weeks.map((week, weekIndex) => (
-            <div
-              key={weekIndex}
-              className="flex min-w-0 flex-1 flex-col gap-[3px]"
-            >
-              {week.map((day, dayIndex) => {
-                if (!day) {
-                  return (
-                    <div
-                      key={`empty-${dayIndex}`}
-                      className="aspect-square w-full rounded-sm bg-transparent"
-                    />
-                  );
-                }
-                return (
-                  <Tooltip key={day.date}>
-                    <TooltipTrigger asChild>
-                      <div
-                        className={`aspect-square w-full rounded-sm ${getContributionColor(
-                          day.level,
-                        )} cursor-default transition-colors hover:ring-1 hover:ring-status-ink`}
-                      />
-                    </TooltipTrigger>
-                    <TooltipContent side="top" sideOffset={4}>
-                      {formatContributionLabel(day)}
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              })}
+        <div
+          ref={scrollerRef}
+          className="max-sm:overflow-x-auto max-sm:overscroll-x-contain sm:overflow-x-clip"
+        >
+          <div className="max-sm:min-w-160">
+            <div className="relative mb-1 h-4" aria-hidden="true">
+              {months.map((month) => (
+                <span
+                  key={`${month.label}-${month.index}`}
+                  className="absolute top-0 font-mono text-[10px] text-muted-foreground"
+                  style={{ left: `${(month.index / weeks.length) * 100}%` }}
+                >
+                  {month.label}
+                </span>
+              ))}
             </div>
-          ))}
+            {/* aria-hidden: decorative heatmap; accessible summary is the count above and the GitHub link below */}
+            <div className="flex w-full gap-0.75" aria-hidden="true">
+              {weeks.map((week, weekIndex) => (
+                <div
+                  key={weekIndex}
+                  className="flex min-w-0 flex-1 flex-col gap-0.75"
+                >
+                  {week.map((day, dayIndex) => {
+                    if (!day) {
+                      return (
+                        <div
+                          key={`empty-${dayIndex}`}
+                          className="aspect-square w-full rounded-sm bg-transparent"
+                        />
+                      );
+                    }
+                    return (
+                      <Tooltip key={day.date}>
+                        <TooltipTrigger asChild>
+                          <div
+                            className={`aspect-square w-full cursor-default rounded-sm transition-colors hover:ring-1 hover:ring-status-ink ${getContributionColor(
+                              day.level,
+                            )}`}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent side="top" sideOffset={4}>
+                          {formatContributionLabel(day)}
+                        </TooltipContent>
+                      </Tooltip>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="mt-4 flex items-center justify-between text-xs font-mono text-muted-foreground">
@@ -231,7 +237,7 @@ export default function GithubContributions() {
             href="https://github.com/nil2000"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className={`flex items-center gap-2 rounded-sm transition-colors hover:text-foreground ${linkFocus}`}
           >
             <GithubIcon size={16} />
             github.com/nil2000

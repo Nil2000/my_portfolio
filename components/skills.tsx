@@ -5,10 +5,11 @@ import { skills } from "@/data/portfolio";
 import SkillIcon from "@/components/skill-icon";
 import { Badge } from "@/components/ui/badge";
 import SectionHeader from "@/components/section-header";
-import { chipVariant, listItem, listStagger } from "@/lib/motion";
+import { chipVariant, listItem, listItemReduced, listStagger } from "@/lib/motion";
 
 export default function Skills() {
   const reduceMotion = useReducedMotion();
+  const item = reduceMotion ? listItemReduced : listItem;
 
   return (
     <section id="skills" className="w-full scroll-mt-24">
@@ -16,7 +17,7 @@ export default function Skills() {
 
       <motion.div
         variants={listStagger}
-        initial={reduceMotion ? "visible" : "hidden"}
+        initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
         className="flex flex-col"
@@ -24,7 +25,7 @@ export default function Skills() {
         {skills.map((group, idx) => (
           <motion.div
             key={group.category}
-            variants={listItem}
+            variants={item}
             className={`grid gap-3 py-4 sm:grid-cols-[8.5rem_minmax(0,1fr)] sm:gap-8 ${
               idx !== 0 ? "border-t border-border" : ""
             }`}
