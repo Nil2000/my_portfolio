@@ -80,7 +80,23 @@ export default function Hero() {
       </div>
 
       <div className="mt-10 flex flex-col gap-8 sm:mt-12 sm:gap-10">
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/* ponytail: size = 2 name lines (font-size × 2 × 0.88 line-height) so photo matches the name block height */}
+          <motion.div
+            initial={photoEnter.hidden}
+            animate={photoEnter.shown}
+            transition={photoEnter.transition}
+            className="relative aspect-square w-[clamp(3.96rem,15.84vw,10.56rem)] shrink-0 overflow-hidden rounded-md border border-border bg-muted"
+          >
+            <Image
+              src={siteConfig.profileImage}
+              alt={`${heroData.name} profile picture`}
+              fill
+              priority
+              sizes="(min-width: 1024px) 169px, 16vw"
+              className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
+            />
+          </motion.div>
           <h1 className="display-stretch font-display text-[clamp(2.25rem,9vw,6rem)] font-extrabold leading-[0.88] tracking-tight text-foreground">
             {nameLines.map((line, index) => {
               const nameEnter = enter(reduceMotion, index * 0.1);
@@ -97,21 +113,6 @@ export default function Hero() {
               );
             })}
           </h1>
-          <motion.div
-            initial={photoEnter.hidden}
-            animate={photoEnter.shown}
-            transition={photoEnter.transition}
-            className="relative aspect-square w-[clamp(3.25rem,12vw,7.5rem)] shrink-0 overflow-hidden rounded-md border border-border bg-muted"
-          >
-            <Image
-              src={siteConfig.profileImage}
-              alt={`${heroData.name} profile picture`}
-              fill
-              priority
-              sizes="(min-width: 1024px) 120px, 12vw"
-              className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
-            />
-          </motion.div>
         </div>
 
         <motion.p

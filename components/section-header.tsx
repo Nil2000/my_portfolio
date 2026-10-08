@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { sections } from "@/data/portfolio";
 import { enter } from "@/lib/motion";
+import { HyperText } from "@/components/ui/hyper-text";
 
 interface SectionHeaderProps {
   id: string;
@@ -28,9 +29,19 @@ export default function SectionHeader({ id }: SectionHeaderProps) {
       >
         {section.hash}
       </span>
-      <h2 className="font-mono text-sm font-medium text-foreground">
-        {section.title}
-      </h2>
+      {reduceMotion ? (
+        <h2 className="font-mono text-sm font-medium text-foreground">
+          {section.title}
+        </h2>
+      ) : (
+        <HyperText
+          as="h2"
+          aria-label={section.title}
+          className="py-0 font-mono text-sm font-medium text-foreground"
+        >
+          {section.title}
+        </HyperText>
+      )}
       <div className="h-px flex-1 bg-border" />
     </motion.div>
   );
