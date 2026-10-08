@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
@@ -21,8 +22,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+const TYPE_MS = 16;
+const COMMIT_DELAY_MS = 180;
+const LINE_BEAT_MS = 140;
+
 const commitLine = `commit ${heroData.hash} (HEAD -> main)`;
+const authorLine = `Author: ${heroData.name}`;
 const nameLines = heroData.name.split(" ");
+
+// ponytail: TypingAnimation paints char 1 at `delay`, then one char every TYPE_MS.
+// If that timing changes, this handoff drifts — read the delay branch in typing-animation.tsx.
+function lineDone(text: string, startMs: number) {
+  return startMs + Math.max(Array.from(text).length - 1, 0) * TYPE_MS;
+}
+
+const authorStartMs = lineDone(commitLine, COMMIT_DELAY_MS) + LINE_BEAT_MS;
 
 const iconLinks = socialLinks.filter((link) => link.icon !== "Github");
 const github = socialLinks.find((link) => link.icon === "Github");
@@ -32,6 +46,14 @@ export default function Hero() {
   const photoEnter = enter(reduceMotion, 0.1);
   const roleEnter = enter(reduceMotion, 0.2);
   const actionsEnter = enter(reduceMotion, 0.3);
+  const badgeEnter = enter(reduceMotion, authorStartMs / 1000);
+  const [authorReady, setAuthorReady] = useState(false);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    const id = window.setTimeout(() => setAuthorReady(true), authorStartMs);
+    return () => window.clearTimeout(id);
+  }, [reduceMotion]);
 
   return (
     <section id="hero" className="flex scroll-mt-24 flex-col pt-1">
@@ -45,8 +67,8 @@ export default function Hero() {
             <TypingAnimation
               as="p"
               startOnView={false}
-              delay={180}
-              duration={16}
+              delay={COMMIT_DELAY_MS}
+              duration={TYPE_MS}
               showCursor
               cursorStyle="block"
               className="font-mono text-xs leading-relaxed tracking-normal text-muted-foreground"
@@ -54,28 +76,57 @@ export default function Hero() {
               {commitLine}
             </TypingAnimation>
           )}
-          <p className="font-mono text-xs leading-relaxed text-muted-foreground">
-            Author: {heroData.name}
+          <p className="grid font-mono text-xs leading-relaxed text-muted-foreground">
+            <span className="sr-only">{authorLine}</span>
+            <span aria-hidden="true" className="invisible col-start-1 row-start-1">
+              {authorLine}▌
+            </span>
+            {reduceMotion ? (
+              <span aria-hidden="true" className="col-start-1 row-start-1">
+                {authorLine}
+              </span>
+            ) : (
+              authorReady && (
+                <TypingAnimation
+                  as="span"
+                  aria-hidden="true"
+                  startOnView={false}
+                  duration={TYPE_MS}
+                  showCursor
+                  cursorStyle="block"
+                  className="col-start-1 row-start-1 font-mono text-xs leading-relaxed tracking-normal text-muted-foreground"
+                >
+                  {authorLine}
+                </TypingAnimation>
+              )
+            )}
           </p>
         </div>
         {heroData.status.available && (
-          <Badge variant="success" className="w-fit gap-1.5">
-            <span className="relative flex size-2">
-              {!reduceMotion && (
-                <motion.span
-                  className="absolute inline-flex size-full rounded-full bg-status"
-                  animate={{ scale: [1, 2.2, 2.2], opacity: [0.55, 0, 0] }}
-                  transition={{
-                    duration: 1.4,
-                    repeat: Infinity,
-                    ease: "easeOut",
-                  }}
-                />
-              )}
-              <span className="relative inline-flex size-2 rounded-full bg-status" />
-            </span>
-            {heroData.status.label}
-          </Badge>
+          <motion.div
+            initial={badgeEnter.hidden}
+            animate={badgeEnter.shown}
+            transition={badgeEnter.transition}
+          >
+            <Badge variant="success" className="w-fit gap-1.5">
+              <span className="relative flex size-2">
+                {!reduceMotion && (
+                  <motion.span
+                    className="absolute inline-flex size-full rounded-full bg-status"
+                    animate={{ scale: [1, 2.2, 2.2], opacity: [0.55, 0, 0] }}
+                    transition={{
+                      duration: 1.4,
+                      repeat: Infinity,
+                      ease: "easeOut",
+                      delay: authorStartMs / 1000 + badgeEnter.transition.duration,
+                    }}
+                  />
+                )}
+                <span className="relative inline-flex size-2 rounded-full bg-status" />
+              </span>
+              {heroData.status.label}
+            </Badge>
+          </motion.div>
         )}
       </div>
 
@@ -94,7 +145,7 @@ export default function Hero() {
               fill
               priority
               sizes="(min-width: 1024px) 169px, 16vw"
-              className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
+              className="object-cover outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
             />
           </motion.div>
           <h1 className="display-stretch font-display text-[clamp(2.25rem,9vw,6rem)] font-extrabold leading-[0.88] tracking-tight text-foreground">
