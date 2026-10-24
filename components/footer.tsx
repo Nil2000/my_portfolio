@@ -23,17 +23,19 @@ export default function Footer() {
           <p className="font-mono text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} {siteConfig.name.split(" ")[0].toLowerCase()}
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <VisitorCount />
-            <p className="font-mono text-xs text-muted-foreground">
-              HEAD -&gt; main
-            </p>
-            <Link
-              href="#hero"
-              className={`font-mono text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline ${linkFocus}`}
-            >
-              Back to top
-            </Link>
+            <div className="flex items-center gap-4 border-l border-border pl-4">
+              <p className="font-mono text-xs text-muted-foreground">
+                HEAD -&gt; main
+              </p>
+              <Link
+                href="#hero"
+                className={`font-mono text-xs text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline ${linkFocus}`}
+              >
+                Back to top
+              </Link>
+            </div>
           </div>
         </div>
       </div>

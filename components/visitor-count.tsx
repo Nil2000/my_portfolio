@@ -22,32 +22,61 @@ function recordVisit() {
 export default function VisitorCount() {
   const reduceMotion = useReducedMotion();
   const [count, setCount] = useState<number | null>(null);
+  const [settled, setSettled] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     recordVisit()
       .then((data) => {
-        if (!cancelled && typeof data.count === "number") setCount(data.count);
+        if (cancelled) return;
+        if (typeof data.count === "number") setCount(data.count);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setSettled(true);
+      });
     return () => {
       cancelled = true;
     };
   }, []);
 
-  if (count === null) return null;
+  if (settled && count === null) return null;
 
   return (
-    <p className="font-mono text-xs text-muted-foreground tabular-nums">
-      {reduceMotion ? (
-        count.toLocaleString()
-      ) : (
-        <NumberTicker
-          value={count}
-          className="font-mono text-xs text-muted-foreground tabular-nums"
+    <p
+      className="inline-flex items-center gap-2 font-mono text-xs text-muted-foreground"
+      aria-live="polite"
+      aria-atomic="true"
+      aria-label={
+        count === null ? undefined : `${count.toLocaleString()} unique visitors`
+      }
+    >
+      <span aria-hidden="true" className="inline-flex items-center gap-2">
+        <span
+          className={`size-1.5 shrink-0 rounded-full ${
+            count === null ? "bg-border" : "bg-status"
+          }`}
         />
-      )}{" "}
-      visitors
+        {count === null ? (
+          <span className="inline-block h-4 w-16 animate-pulse rounded-sm bg-muted" />
+        ) : reduceMotion ? (
+          <>
+            <span className="tabular-nums text-foreground">
+              {count.toLocaleString()}
+            </span>
+            <span>unique</span>
+          </>
+        ) : (
+          <>
+            <NumberTicker
+              value={count}
+              startValue={Math.max(0, count - 24)}
+              className="font-mono text-xs text-foreground tabular-nums tracking-normal dark:text-foreground"
+            />
+            <span>unique</span>
+          </>
+        )}
+      </span>
     </p>
   );
 }
