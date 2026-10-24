@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { siteConfig } from "@/data/portfolio";
 import { listItem, listItemReduced } from "@/lib/motion";
 import { linkFocus } from "@/lib/utils";
+import VisitorCount from "@/components/visitor-count";
 
 export default function Footer() {
   const reduceMotion = useReducedMotion();
@@ -23,6 +24,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} {siteConfig.name.split(" ")[0].toLowerCase()}
           </p>
           <div className="flex items-center gap-4">
+            <VisitorCount />
             <p className="font-mono text-xs text-muted-foreground">
               HEAD -&gt; main
             </p>
