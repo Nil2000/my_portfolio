@@ -7,9 +7,13 @@ import Skills from "@/components/skills";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 import { getGithubContributions } from "@/lib/github";
+import { getLastPlayed } from "@/lib/spotify";
 
 export default async function Home() {
-  const contributions = await getGithubContributions();
+  const [contributions, lastPlayed] = await Promise.all([
+    getGithubContributions(),
+    getLastPlayed(),
+  ]);
 
   return (
     <>
@@ -25,7 +29,7 @@ export default async function Home() {
         tabIndex={-1}
         className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-20 px-4 pt-28 pb-24 outline-none sm:px-6"
       >
-        <Hero />
+        <Hero track={lastPlayed} />
         <GithubContributions data={contributions} />
         <Experience />
         <Projects />

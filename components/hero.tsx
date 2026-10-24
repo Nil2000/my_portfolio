@@ -10,7 +10,9 @@ import {
   siteConfig,
   socialLinks,
 } from "@/data/portfolio";
+import type { LastPlayed as LastPlayedTrack } from "@/lib/spotify";
 import SocialIcon from "./social-icon";
+import LastPlayed from "./last-played";
 import { enter } from "@/lib/motion";
 import { linkFocus } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +43,7 @@ const authorStartMs = lineDone(commitLine, COMMIT_DELAY_MS) + LINE_BEAT_MS;
 const iconLinks = socialLinks.filter((link) => link.icon !== "Github");
 const github = socialLinks.find((link) => link.icon === "Github");
 
-export default function Hero() {
+export default function Hero({ track }: { track: LastPlayedTrack | null }) {
   const reduceMotion = useReducedMotion();
   const photoEnter = enter(reduceMotion, 0.1);
   const roleEnter = enter(reduceMotion, 0.2);
@@ -229,6 +231,7 @@ export default function Hero() {
             </div>
           </div>
         </motion.div>
+        {track ? <LastPlayed track={track} /> : null}
       </div>
     </section>
   );
