@@ -225,6 +225,7 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/Nil2000/Cursor-2d-animation",
     featured: true,
+    image: "/cursor-2d-animation.png",
   },
   {
     id: "proj-3",
