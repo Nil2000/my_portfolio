@@ -244,6 +244,7 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/Nil2000/spotofy",
     featured: true,
+    image: "/spotofy.png",
   },
 ];
 
