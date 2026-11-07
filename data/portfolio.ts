@@ -56,6 +56,11 @@ export interface ContactData {
   heading: string;
   description: string;
   email: string;
+  bookingUrl: string;
+}
+
+export function isBookingUrl(url: string) {
+  return url.startsWith("http://") || url.startsWith("https://");
 }
 
 export interface SiteConfig {
@@ -294,4 +299,5 @@ export const contactData: ContactData = {
   description:
     "Open to new roles. Questions, project ideas, and hellos all land in the same inbox.",
   email: "nilabhra09b.net@gmail.com",
+  bookingUrl: "https://calendar.app.google/imEywqwhXRMxYLpd6",
 };

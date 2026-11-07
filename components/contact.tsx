@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { contactData } from "@/data/portfolio";
+import { contactData, isBookingUrl } from "@/data/portfolio";
 import SectionHeader from "@/components/section-header";
 import { Button } from "@/components/ui/button";
 import { enter } from "@/lib/motion";
@@ -66,10 +66,25 @@ export default function Contact() {
           <p className="font-mono text-xs text-muted-foreground">
             $ git push --to
           </p>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button asChild className="h-8 px-3 font-mono text-xs">
               <a href={`mailto:${contactData.email}`}>Email me</a>
             </Button>
+            {isBookingUrl(contactData.bookingUrl) && (
+              <Button
+                asChild
+                variant="outline"
+                className="h-8 px-3 font-mono text-xs"
+              >
+                <a
+                  href={contactData.bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Book a call
+                </a>
+              </Button>
+            )}
             <Button
               type="button"
               variant="outline"

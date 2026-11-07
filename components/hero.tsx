@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "motion/react";
 import {
   contactData,
   heroData,
+  isBookingUrl,
   siteConfig,
   socialLinks,
 } from "@/data/portfolio";
@@ -194,6 +195,21 @@ export default function Hero({ track }: { track: LastPlayedTrack | null }) {
             <Button asChild className="h-8 px-3 font-mono text-xs">
               <a href={`mailto:${contactData.email}`}>Email me</a>
             </Button>
+            {isBookingUrl(contactData.bookingUrl) && (
+              <Button
+                asChild
+                variant="outline"
+                className="h-8 px-3 font-mono text-xs"
+              >
+                <a
+                  href={contactData.bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Book a call
+                </a>
+              </Button>
+            )}
             {github && (
               <Button
                 asChild
