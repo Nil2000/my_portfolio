@@ -59,9 +59,13 @@ export interface ContactData {
   bookingUrl: string;
 }
 
-export function isBookingUrl(url: string) {
+export function isExternalUrl(url: string) {
   return url.startsWith("http://") || url.startsWith("https://");
 }
+
+// Google Drive share link. The resume link stays off the page until this is set.
+export const resumeUrl =
+  "https://drive.google.com/file/d/1flalQNS2a8n6qJ0jnVG5_kl_F6MyxDIT/view";
 
 export interface SiteConfig {
   name: string;

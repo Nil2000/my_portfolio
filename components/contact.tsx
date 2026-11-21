@@ -1,51 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Check, Copy } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { contactData, isBookingUrl } from "@/data/portfolio";
+import { motion, useReducedMotion } from "motion/react";
+import { contactData, isExternalUrl } from "@/data/portfolio";
+import ExternalMark from "@/components/external-mark";
 import SectionHeader from "@/components/section-header";
 import { Button } from "@/components/ui/button";
 import { enter } from "@/lib/motion";
-
-type CopyState = "idle" | "copied" | "failed";
+import { linkFocus } from "@/lib/utils";
 
 export default function Contact() {
   const reduceMotion = useReducedMotion();
-  const [copyState, setCopyState] = useState<CopyState>("idle");
-  const resetTimer = useRef<number | null>(null);
   const intro = enter(reduceMotion);
-  const iconSwap = reduceMotion
-    ? { duration: 0.15, ease: "easeOut" as const }
-    : { type: "spring" as const, duration: 0.3, bounce: 0 };
-
-  useEffect(() => {
-    return () => {
-      if (resetTimer.current !== null) window.clearTimeout(resetTimer.current);
-    };
-  }, []);
-
-  function scheduleReset() {
-    if (resetTimer.current !== null) window.clearTimeout(resetTimer.current);
-    resetTimer.current = window.setTimeout(() => setCopyState("idle"), 2000);
-  }
-
-  async function copyEmail() {
-    try {
-      await navigator.clipboard.writeText(contactData.email);
-      setCopyState("copied");
-    } catch {
-      setCopyState("failed");
-    }
-    scheduleReset();
-  }
-
-  const label =
-    copyState === "copied"
-      ? "Copied"
-      : copyState === "failed"
-        ? "Copy failed"
-        : "Copy email";
 
   return (
     <section id="contact" className="w-full scroll-mt-24 pb-4">
@@ -63,81 +28,31 @@ export default function Contact() {
         </p>
 
         <div className="flex flex-col items-start gap-3">
-          <p className="font-mono text-xs text-muted-foreground">
-            $ git push --to
-          </p>
-          <div className="flex flex-wrap items-center gap-2">
-            <Button asChild className="h-8 px-3 font-mono text-xs">
-              <a href={`mailto:${contactData.email}`}>Email me</a>
-            </Button>
-            {isBookingUrl(contactData.bookingUrl) && (
-              <Button
-                asChild
-                variant="outline"
-                className="h-8 px-3 font-mono text-xs"
-              >
-                <a
-                  href={contactData.bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Book a call
-                </a>
-              </Button>
-            )}
+          <a
+            href={`mailto:${contactData.email}`}
+            className={`max-w-full break-all font-mono text-sm text-foreground underline decoration-muted-foreground underline-offset-4 transition-[text-decoration-color] duration-150 hover:decoration-status-ink ${linkFocus}`}
+          >
+            {contactData.email}
+          </a>
+          {isExternalUrl(contactData.bookingUrl) && (
             <Button
-              type="button"
+              asChild
               variant="outline"
-              className="h-8 px-3 font-mono text-xs"
-              onClick={copyEmail}
+              className="h-8 pl-3 pr-2.5 font-mono text-xs"
             >
-              <span className="inline-grid">
-                <span
-                  aria-hidden="true"
-                  className="invisible col-start-1 row-start-1 inline-flex items-center gap-1.5"
-                >
-                  <Copy />
-                  Copy failed
-                </span>
-                <span className="col-start-1 row-start-1 inline-flex items-center justify-center gap-1.5">
-                  <span className="relative size-4">
-                    <AnimatePresence initial={false}>
-                      <motion.span
-                        key={copyState === "copied" ? "check" : "copy"}
-                        className="absolute inset-0 inline-flex items-center justify-center"
-                        initial={
-                          reduceMotion
-                            ? { opacity: 0 }
-                            : { opacity: 0, scale: 0.25, filter: "blur(4px)" }
-                        }
-                        animate={
-                          reduceMotion
-                            ? { opacity: 1 }
-                            : { opacity: 1, scale: 1, filter: "blur(0px)" }
-                        }
-                        exit={
-                          reduceMotion
-                            ? { opacity: 0 }
-                            : { opacity: 0, scale: 0.25, filter: "blur(4px)" }
-                        }
-                        transition={iconSwap}
-                      >
-                        {copyState === "copied" ? <Check /> : <Copy />}
-                      </motion.span>
-                    </AnimatePresence>
-                  </span>
-                  {label}
-                </span>
-              </span>
+              <motion.a
+                href={contactData.bookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial="rest"
+                whileHover="hover"
+                whileFocus="hover"
+              >
+                Book a call
+                <ExternalMark />
+              </motion.a>
             </Button>
-          </div>
-          <span className="sr-only" aria-live="polite">
-            {copyState === "copied"
-              ? "Email copied"
-              : copyState === "failed"
-                ? "Could not copy email"
-                : ""}
-          </span>
+          )}
         </div>
       </motion.div>
     </section>

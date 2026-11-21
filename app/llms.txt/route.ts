@@ -2,8 +2,9 @@ import {
   contactData,
   experiences,
   heroData,
-  isBookingUrl,
+  isExternalUrl,
   projects,
+  resumeUrl,
   siteConfig,
   skills,
   socialLinks,
@@ -49,9 +50,10 @@ function llmsTxt() {
 
   const contact = [
     link("Email", `mailto:${contactData.email}`, contactData.description),
-    ...(isBookingUrl(contactData.bookingUrl)
+    ...(isExternalUrl(contactData.bookingUrl)
       ? [link("Book a call", contactData.bookingUrl)]
       : []),
+    ...(isExternalUrl(resumeUrl) ? [link("Resume", resumeUrl)] : []),
     ...socialLinks.map((social) => link(social.platform, social.url)),
   ].join("\n");
 

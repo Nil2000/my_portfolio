@@ -7,15 +7,17 @@ import { motion, useReducedMotion } from "motion/react";
 import {
   contactData,
   heroData,
-  isBookingUrl,
+  isExternalUrl,
+  resumeUrl,
   siteConfig,
   socialLinks,
 } from "@/data/portfolio";
 import type { LastPlayed as LastPlayedTrack } from "@/lib/spotify";
+import ExternalMark from "./external-mark";
 import SocialIcon from "./social-icon";
 import LastPlayed from "./last-played";
 import { enter } from "@/lib/motion";
-import { linkFocus } from "@/lib/utils";
+import { cn, linkFocus } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TypingAnimation } from "@/components/ui/typing-animation";
@@ -40,9 +42,6 @@ function lineDone(text: string, startMs: number) {
 }
 
 const authorStartMs = lineDone(commitLine, COMMIT_DELAY_MS) + LINE_BEAT_MS;
-
-const iconLinks = socialLinks.filter((link) => link.icon !== "Github");
-const github = socialLinks.find((link) => link.icon === "Github");
 
 export default function Hero({ track }: { track: LastPlayedTrack | null }) {
   const reduceMotion = useReducedMotion();
@@ -105,31 +104,57 @@ export default function Hero({ track }: { track: LastPlayedTrack | null }) {
             )}
           </p>
         </div>
-        {heroData.status.available && (
-          <motion.div
-            initial={badgeEnter.hidden}
-            animate={badgeEnter.shown}
-            transition={badgeEnter.transition}
-          >
-            <Badge variant="success" className="w-fit gap-1.5">
-              <span className="relative flex size-2">
-                {!reduceMotion && (
-                  <motion.span
-                    className="absolute inline-flex size-full rounded-full bg-status"
-                    animate={{ scale: [1, 2.2, 2.2], opacity: [0.55, 0, 0] }}
-                    transition={{
-                      duration: 1.4,
-                      repeat: Infinity,
-                      ease: "easeOut",
-                      delay: authorStartMs / 1000 + badgeEnter.transition.duration,
-                    }}
-                  />
-                )}
-                <span className="relative inline-flex size-2 rounded-full bg-status" />
-              </span>
-              {heroData.status.label}
-            </Badge>
-          </motion.div>
+        {(heroData.status.available || isExternalUrl(resumeUrl)) && (
+          <div className="flex flex-col items-end gap-2">
+            {heroData.status.available && (
+              <motion.div
+                initial={badgeEnter.hidden}
+                animate={badgeEnter.shown}
+                transition={badgeEnter.transition}
+              >
+                <Badge variant="success" className="w-fit gap-1.5">
+                  <span className="relative flex size-2">
+                    {!reduceMotion && (
+                      <motion.span
+                        className="absolute inline-flex size-full rounded-full bg-status"
+                        animate={{ scale: [1, 2.2, 2.2], opacity: [0.55, 0, 0] }}
+                        transition={{
+                          duration: 1.4,
+                          repeat: Infinity,
+                          ease: "easeOut",
+                          delay:
+                            authorStartMs / 1000 +
+                            badgeEnter.transition.duration,
+                        }}
+                      />
+                    )}
+                    <span className="relative inline-flex size-2 rounded-full bg-status" />
+                  </span>
+                  {heroData.status.label}
+                </Badge>
+              </motion.div>
+            )}
+            {isExternalUrl(resumeUrl) && (
+              <motion.div
+                initial={badgeEnter.hidden}
+                animate={badgeEnter.shown}
+                transition={badgeEnter.transition}
+              >
+                <motion.a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial="rest"
+                  whileHover="hover"
+                  whileFocus="hover"
+                  className={`inline-flex items-center gap-1 font-mono text-xs leading-relaxed text-muted-foreground underline-offset-4 transition-colors duration-150 hover:text-foreground hover:underline hover:decoration-status-ink ${linkFocus}`}
+                >
+                  resume.pdf
+                  <ExternalMark />
+                </motion.a>
+              </motion.div>
+            )}
+          </div>
         )}
       </div>
 
@@ -191,42 +216,31 @@ export default function Hero({ track }: { track: LastPlayedTrack | null }) {
             {heroData.description}
           </p>
 
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button asChild className="h-8 px-3 font-mono text-xs">
               <a href={`mailto:${contactData.email}`}>Email me</a>
             </Button>
-            {isBookingUrl(contactData.bookingUrl) && (
+            {isExternalUrl(contactData.bookingUrl) && (
               <Button
                 asChild
                 variant="outline"
-                className="h-8 px-3 font-mono text-xs"
+                className="h-8 pl-3 pr-2.5 font-mono text-xs"
               >
-                <a
+                <motion.a
                   href={contactData.bookingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  initial="rest"
+                  whileHover="hover"
+                  whileFocus="hover"
                 >
                   Book a call
-                </a>
+                  <ExternalMark />
+                </motion.a>
               </Button>
             )}
-            {github && (
-              <Button
-                asChild
-                variant="outline"
-                className="h-8 px-3 font-mono text-xs"
-              >
-                <Link
-                  href={github.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  GitHub
-                </Link>
-              </Button>
-            )}
-            <div className="flex items-center gap-1">
-              {iconLinks.map((link) => (
+            <div className="flex items-center">
+              {socialLinks.map((link) => (
                 <Tooltip key={link.platform}>
                   <TooltipTrigger asChild>
                     <Link
@@ -234,9 +248,12 @@ export default function Hero({ track }: { track: LastPlayedTrack | null }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.platform}
-                      className={`p-2 text-muted-foreground transition-colors hover:text-foreground ${linkFocus}`}
+                      className={cn(
+                        linkFocus,
+                        "inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-[color,background-color,scale] duration-150 ease-out hover:bg-muted hover:text-foreground motion-safe:active:scale-[0.96]",
+                      )}
                     >
-                      <SocialIcon name={link.icon} size={18} />
+                      <SocialIcon name={link.icon} size={16} />
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent side="top" sideOffset={4}>
